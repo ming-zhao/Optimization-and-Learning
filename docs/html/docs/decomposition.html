@@ -1,0 +1,1111 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Decomposition Methods &mdash; Optimization and Learning 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/@jupyter-widgets/html-manager@^0.14.0/dist/embed-amd.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"equationNumbers": {"autoNumber": "AMS", "useLabelIds": true}}, "tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Conic Programming" href="conic_programming.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Optimization and Learning
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Optimization and Learning</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear_regression.html">Linear Models for Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear_classification.html">Linear Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear_programming.html">Linear Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neural_networks.html">Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convnet.html">Convolutional Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="text_mining.html">Text Mining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keras.html">Advanced Deep-Learning by Keras</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conic_programming.html">Conic Programming</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Decomposition Methods</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Optimization and Learning</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Decomposition Methods</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/docs/decomposition.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 5ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    background: #f5f5f5;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="Decomposition-Methods">
+<h1>Decomposition Methods<a class="headerlink" href="#Decomposition-Methods" title="Permalink to this headline">¶</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">gurobipy</span> <span class="k">as</span> <span class="nn">gb</span>
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/ming-zhao/Optimization-and-Learning/master/data/benders.csv&#39;</span><span class="p">,</span>
+                 <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;gen&#39;</span><span class="p">,</span> <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>maxprod</th>
+      <th>price</th>
+      <th>uppremium</th>
+      <th>downpremium</th>
+      <th>upflex</th>
+      <th>downflex</th>
+    </tr>
+    <tr>
+      <th>gen</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>g1</th>
+      <td>80</td>
+      <td>10</td>
+      <td>2</td>
+      <td>8</td>
+      <td>0.10</td>
+      <td>0.10</td>
+    </tr>
+    <tr>
+      <th>g2</th>
+      <td>60</td>
+      <td>20</td>
+      <td>4</td>
+      <td>7</td>
+      <td>0.15</td>
+      <td>0.15</td>
+    </tr>
+    <tr>
+      <th>g3</th>
+      <td>40</td>
+      <td>30</td>
+      <td>6</td>
+      <td>6</td>
+      <td>0.20</td>
+      <td>0.20</td>
+    </tr>
+    <tr>
+      <th>g4</th>
+      <td>40</td>
+      <td>40</td>
+      <td>8</td>
+      <td>5</td>
+      <td>0.50</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>g5</th>
+      <td>50</td>
+      <td>100</td>
+      <td>10</td>
+      <td>2</td>
+      <td>1.00</td>
+      <td>1.00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Class which can have attributes set</span>
+<span class="k">class</span> <span class="nc">expando</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">Benders_Master</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_iters</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">numscenarios</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">demand_avg</span><span class="o">=</span><span class="mf">200.0</span><span class="p">,</span> <span class="n">demand_std</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Class which solves the benders decomposed version of the dispatch problem.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            max_iters: int, default 25</span>
+<span class="sd">                    Maximum number of Benders iterations to run.</span>
+<span class="sd">            verbose: boolean, default True</span>
+<span class="sd">                    Print information on upper and lower bounds for each iteration</span>
+<span class="sd">            numscenarios: int, default 100</span>
+<span class="sd">                    Number of scenarios to use for subproblems</span>
+<span class="sd">            demand_avg: float, default 200.0</span>
+<span class="sd">                    Average demand, used as day-ahead bid.</span>
+<span class="sd">            demand_std: float, default 20.0</span>
+<span class="sd">                    Standard deviation for demand in scenario generation.</span>
+<span class="sd">            epsilon: float, default 0.001</span>
+<span class="sd">                    Relative threshold for benders iterations.</span>
+<span class="sd">                    Iterations will stop if ub - lb &gt; |epsilon * lb|</span>
+<span class="sd">            delta: float, default 0.001</span>
+<span class="sd">                    Absolute threshold for benders iterations.</span>
+<span class="sd">                    Iterations will stop if ub &lt; lb + delta</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">expando</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="n">expando</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="n">expando</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">expando</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">expando</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="n">max_iters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">numscenarios</span> <span class="o">=</span> <span class="n">numscenarios</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">demand_avg</span> <span class="o">=</span> <span class="n">demand_avg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">demand_std</span> <span class="o">=</span> <span class="n">demand_std</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_benders_params</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">delta</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_data</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_model</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_submodel_rebuild</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># initial solution</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+
+        <span class="c1"># Only build submodels if they don&#39;t exist or a rebuild is forced.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;submodels&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">force_submodel_rebuild</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">submodels</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="p">:</span> <span class="n">Benders_Subproblem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="o">=</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarios</span><span class="p">}</span>
+        <span class="c1"># Update fixed variables for submodels and rebuild.</span>
+        <span class="p">[</span><span class="n">sm</span><span class="o">.</span><span class="n">update_fixed_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">for</span> <span class="n">sm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">submodels</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+        <span class="p">[</span><span class="n">sm</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span> <span class="k">for</span> <span class="n">sm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">submodels</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+
+        <span class="c1"># Update bounds based on submodel rebuild</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_bounds</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_vars</span><span class="p">()</span>
+        <span class="c1"># Build cuts until we reach absolute and relative tolerance,</span>
+        <span class="c1"># or max_iters cuts have been generated.</span>
+        <span class="k">while</span> <span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">ub</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lb</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">delta</span> <span class="ow">or</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">ub</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lb</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lb</span><span class="p">))</span> <span class="ow">and</span>
+                <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">cutlist</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">max_iters</span><span class="p">):</span>
+            <span class="c1"># Generate new cut.</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;********&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* Benders</span><span class="se">\&#39;</span><span class="s1"> step </span><span class="si">{0}</span><span class="s1">:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">upper_bounds</span><span class="p">)))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* Upper bound: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">ub</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* Lower bound: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lb</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;********&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_do_benders_step</span><span class="p">()</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">_do_benders_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_cut</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_start_from_previous</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+            <span class="p">[</span><span class="n">sm</span><span class="o">.</span><span class="n">update_fixed_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">for</span> <span class="n">sm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">submodels</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+            <span class="p">[</span><span class="n">sm</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span> <span class="k">for</span> <span class="n">sm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">submodels</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_bounds</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_vars</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_init_benders_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">cutlist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">upper_bounds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lower_bounds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">mipgap</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">solvetime</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">alphas</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lambdas</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">ub</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">GRB</span><span class="o">.</span><span class="n">INFINITY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lb</span> <span class="o">=</span> <span class="o">-</span><span class="n">gb</span><span class="o">.</span><span class="n">GRB</span><span class="o">.</span><span class="n">INFINITY</span>
+
+    <span class="c1">###</span>
+    <span class="c1"># Data Loading</span>
+    <span class="c1">###</span>
+    <span class="k">def</span> <span class="nf">_load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_generator_data</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_demand_data</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_load_generator_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">geninfo</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/ming-zhao/Optimization-and-Learning/master/data/benders.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;gen&#39;</span><span class="p">,</span> <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">generators</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">geninfo</span><span class="o">.</span><span class="n">index</span>
+
+    <span class="k">def</span> <span class="nf">_load_demand_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">VOLL</span> <span class="o">=</span> <span class="mi">1000</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">demand_da</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">demand_avg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarios</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">numscenarios</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">demand_rt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">demand_avg</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">demand_std</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">numscenarios</span><span class="p">),</span>
+            <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarios</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarioprobs</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="p">:</span> <span class="mf">1.0</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">numscenarios</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarios</span><span class="p">}</span>
+        <span class="c1"># Dump load</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dumploadprice</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dumploadmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">demand_da</span>
+
+    <span class="c1">###</span>
+    <span class="c1"># Model Building</span>
+    <span class="c1">###</span>
+    <span class="k">def</span> <span class="nf">_build_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_variables</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_objective</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_constraints</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
+        <span class="n">gens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">generators</span>
+        <span class="n">geninfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">geninfo</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_da</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">gens</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_da</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVar</span><span class="p">(</span><span class="n">lb</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="n">geninfo</span><span class="o">.</span><span class="n">maxprod</span><span class="p">[</span><span class="n">g</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">load_da</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVar</span><span class="p">(</span><span class="n">lb</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">demand_da</span><span class="p">)</span>
+
+        <span class="c1"># Benders&#39; proxy variable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVar</span><span class="p">(</span><span class="n">lb</span><span class="o">=-</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">demand_da</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">VOLL</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="n">gb</span><span class="o">.</span><span class="n">GRB</span><span class="o">.</span><span class="n">INFINITY</span><span class="p">)</span>
+
+        <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build_objective</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
+        <span class="n">gens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">generators</span>
+        <span class="n">geninfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">geninfo</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">objective</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">setObjective</span><span class="p">(</span>
+            <span class="n">gb</span><span class="o">.</span><span class="n">quicksum</span><span class="p">(</span><span class="n">geninfo</span><span class="o">.</span><span class="n">price</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_da</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">gens</span><span class="p">)</span> <span class="o">-</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">VOLL</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">load_da</span> <span class="o">+</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
+        <span class="n">gens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">generators</span>
+        <span class="n">geninfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">geninfo</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">powerbalance_da</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addConstr</span><span class="p">(</span>
+            <span class="n">gb</span><span class="o">.</span><span class="n">quicksum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_da</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">gens</span><span class="p">),</span>
+            <span class="n">gb</span><span class="o">.</span><span class="n">GRB</span><span class="o">.</span><span class="n">EQUAL</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">load_da</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">cuts</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">_add_cut</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">gens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">generators</span>
+        <span class="n">geninfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">geninfo</span>
+
+        <span class="n">cut</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">cutlist</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">cutlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cut</span><span class="p">)</span>
+
+        <span class="c1"># Get sensitivities from subproblem</span>
+        <span class="n">sens_gen</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">g</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarioprobs</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">submodels</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">fixed_da</span><span class="p">[</span><span class="n">g</span><span class="p">]</span><span class="o">.</span><span class="n">pi</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarios</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">gens</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lambdas</span><span class="p">[</span><span class="n">cut</span><span class="p">]</span> <span class="o">=</span> <span class="n">sens_gen</span>
+        <span class="n">sens_load</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarioprobs</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">submodels</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">fixed_load_da</span><span class="o">.</span><span class="n">pi</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarios</span><span class="p">)</span>
+        <span class="c1"># Get subproblem objectives)</span>
+        <span class="n">z_sub</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarioprobs</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">submodels</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ObjVal</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarios</span><span class="p">)</span>
+        <span class="c1"># Generate cut</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">cuts</span><span class="p">[</span><span class="n">cut</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addConstr</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span>
+            <span class="n">gb</span><span class="o">.</span><span class="n">GRB</span><span class="o">.</span><span class="n">GREATER_EQUAL</span><span class="p">,</span>
+            <span class="n">z_sub</span> <span class="o">+</span>
+            <span class="n">gb</span><span class="o">.</span><span class="n">quicksum</span><span class="p">(</span><span class="n">sens_gen</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_da</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">gens</span><span class="p">)</span> <span class="o">-</span>
+            <span class="nb">sum</span><span class="p">(</span><span class="n">sens_gen</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_da</span><span class="p">[</span><span class="n">g</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">gens</span><span class="p">)</span> <span class="o">+</span>
+            <span class="n">sens_load</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">load_da</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">load_da</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_clear_cuts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">cutlist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lambdas</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">con</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">cuts</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">con</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">cuts</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">ub</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">GRB</span><span class="o">.</span><span class="n">INFINITY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lb</span> <span class="o">=</span> <span class="o">-</span><span class="n">gb</span><span class="o">.</span><span class="n">GRB</span><span class="o">.</span><span class="n">INFINITY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">upper_bounds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lower_bounds</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1">###</span>
+    <span class="c1"># Update upper and lower bounds for Benders&#39; iterations</span>
+    <span class="c1">###</span>
+    <span class="k">def</span> <span class="nf">_update_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">z_sub</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarioprobs</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">submodels</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ObjVal</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarios</span><span class="p">)</span>
+        <span class="n">z_master</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ObjVal</span>
+        <span class="c1"># The best upper bound is the best incumbent with</span>
+        <span class="c1"># alpha replaced by the sub problems&#39; actual cost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">ub</span> <span class="o">=</span> <span class="n">z_master</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">alpha</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">z_sub</span>
+        <span class="c1"># The best lower bound is the current bestbound,</span>
+        <span class="c1"># This will equal z_master at optimality</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ObjBound</span>
+        <span class="k">except</span> <span class="n">gb</span><span class="o">.</span><span class="n">GurobiError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ObjVal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">upper_bounds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">ub</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lower_bounds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">lb</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">mipgap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">IntFeasTol</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">solvetime</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">Runtime</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_save_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># self.data.xs.append(self.variables.x.x)</span>
+        <span class="c1"># self.data.ys.append(self.submodel.variables.y.x)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">alphas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">alpha</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_start_from_previous</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Used to warm-start MIP problems.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">class</span> <span class="nc">Benders_Subproblem</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MP</span><span class="p">,</span> <span class="n">scenario</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">expando</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="n">expando</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="n">expando</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">expando</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">MP</span> <span class="o">=</span> <span class="n">MP</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenario</span> <span class="o">=</span> <span class="n">scenario</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_model</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_fixed_vars</span><span class="p">(</span><span class="n">MP</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+
+    <span class="c1">###</span>
+    <span class="c1">#   Model Building</span>
+    <span class="c1">###</span>
+    <span class="k">def</span> <span class="nf">_build_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">gb</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setParam</span><span class="p">(</span><span class="s1">&#39;OutputFlag&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_variables</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_objective</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_constraints</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
+
+        <span class="n">dumploadmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MP</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dumploadmax</span>
+        <span class="n">gens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MP</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">generators</span>
+        <span class="n">geninfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MP</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">geninfo</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenario</span>
+        <span class="n">demandmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MP</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">demand_rt</span><span class="p">[</span><span class="n">s</span><span class="p">]</span>
+
+        <span class="c1"># Production of generator g, up and downregulation</span>
+        <span class="c1"># Up and down regulation are limited by the generators&#39; capability.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_da</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt_up</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt_down</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">gens</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_da</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVar</span><span class="p">(</span><span class="n">lb</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="n">geninfo</span><span class="o">.</span><span class="n">maxprod</span><span class="p">[</span><span class="n">g</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVar</span><span class="p">(</span><span class="n">lb</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="n">geninfo</span><span class="o">.</span><span class="n">maxprod</span><span class="p">[</span><span class="n">g</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt_up</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVar</span><span class="p">(</span><span class="n">lb</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="n">geninfo</span><span class="o">.</span><span class="n">maxprod</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">*</span> <span class="n">geninfo</span><span class="o">.</span><span class="n">upflex</span><span class="p">[</span><span class="n">g</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt_down</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVar</span><span class="p">(</span><span class="n">lb</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="n">geninfo</span><span class="o">.</span><span class="n">maxprod</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">*</span> <span class="n">geninfo</span><span class="o">.</span><span class="n">downflex</span><span class="p">[</span><span class="n">g</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">loadserved</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVar</span><span class="p">(</span><span class="n">lb</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="n">demandmax</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">loadserved_DA</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVar</span><span class="p">(</span><span class="n">lb</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="n">gb</span><span class="o">.</span><span class="n">GRB</span><span class="o">.</span><span class="n">INFINITY</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">dumpload</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVar</span><span class="p">(</span><span class="n">lb</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">ub</span><span class="o">=</span><span class="n">dumploadmax</span><span class="p">)</span>
+
+        <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build_objective</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
+        <span class="n">gens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MP</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">generators</span>
+        <span class="n">geninfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MP</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">geninfo</span>
+        <span class="n">VOLL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MP</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">VOLL</span>
+        <span class="n">dumploadprice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MP</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dumploadprice</span>
+
+        <span class="n">m</span><span class="o">.</span><span class="n">setObjective</span><span class="p">(</span>
+            <span class="n">gb</span><span class="o">.</span><span class="n">quicksum</span><span class="p">((</span><span class="n">geninfo</span><span class="o">.</span><span class="n">price</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">+</span> <span class="n">geninfo</span><span class="o">.</span><span class="n">uppremium</span><span class="p">[</span><span class="n">g</span><span class="p">])</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt_up</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">gens</span><span class="p">)</span> <span class="o">+</span>
+            <span class="n">gb</span><span class="o">.</span><span class="n">quicksum</span><span class="p">((</span><span class="o">-</span> <span class="n">geninfo</span><span class="o">.</span><span class="n">price</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">+</span> <span class="n">geninfo</span><span class="o">.</span><span class="n">downpremium</span><span class="p">[</span><span class="n">g</span><span class="p">])</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt_down</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">gens</span><span class="p">)</span> <span class="o">-</span>
+            <span class="n">VOLL</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">loadserved</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">loadserved_DA</span><span class="p">)</span> <span class="o">+</span>
+            <span class="n">dumploadprice</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">dumpload</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
+        <span class="n">gens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MP</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">generators</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">powerbalance_rt</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addConstr</span><span class="p">(</span>
+            <span class="n">gb</span><span class="o">.</span><span class="n">quicksum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">gens</span><span class="p">),</span>
+            <span class="n">gb</span><span class="o">.</span><span class="n">GRB</span><span class="o">.</span><span class="n">EQUAL</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">loadserved</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">dumpload</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">coupling_da</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">fixed_da</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">gens</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">coupling_da</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addConstr</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt</span><span class="p">[</span><span class="n">g</span><span class="p">],</span>
+                <span class="n">gb</span><span class="o">.</span><span class="n">GRB</span><span class="o">.</span><span class="n">EQUAL</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_da</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt_up</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt_down</span><span class="p">[</span><span class="n">g</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">fixed_da</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addConstr</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_da</span><span class="p">[</span><span class="n">g</span><span class="p">],</span>
+                <span class="n">gb</span><span class="o">.</span><span class="n">GRB</span><span class="o">.</span><span class="n">EQUAL</span><span class="p">,</span>
+                <span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">fixed_load_da</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addConstr</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">loadserved_DA</span><span class="p">,</span>
+            <span class="n">gb</span><span class="o">.</span><span class="n">GRB</span><span class="o">.</span><span class="n">EQUAL</span><span class="p">,</span>
+            <span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update_fixed_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MP</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">MP</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">generators</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">fixed_da</span><span class="p">[</span><span class="n">g</span><span class="p">]</span><span class="o">.</span><span class="n">rhs</span> <span class="o">=</span> <span class="n">MP</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_da</span><span class="p">[</span><span class="n">g</span><span class="p">]</span><span class="o">.</span><span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">fixed_load_da</span><span class="o">.</span><span class="n">rhs</span> <span class="o">=</span> <span class="n">MP</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">load_da</span><span class="o">.</span><span class="n">x</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># from benders_stochastic_master import Benders_Master</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;ticks&#39;</span><span class="p">)</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">Benders_Master</span><span class="p">()</span>
+<span class="n">m</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">Params</span><span class="o">.</span><span class="n">OutputFlag</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">m</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+
+<span class="n">m</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;test.lp&quot;</span><span class="p">)</span>
+
+<span class="n">rtdf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">g</span><span class="p">:</span> <span class="p">{</span><span class="n">m</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">demand_rt</span><span class="p">[</span><span class="n">s</span><span class="p">]:</span> <span class="n">m</span><span class="o">.</span><span class="n">submodels</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt</span><span class="p">[</span><span class="n">g</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarios</span><span class="p">}</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">generators</span><span class="p">})</span>
+<span class="n">updf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">g</span><span class="p">:</span> <span class="p">{</span><span class="n">m</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">demand_rt</span><span class="p">[</span><span class="n">s</span><span class="p">]:</span> <span class="n">m</span><span class="o">.</span><span class="n">submodels</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt_up</span><span class="p">[</span><span class="n">g</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarios</span><span class="p">}</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">generators</span><span class="p">})</span>
+<span class="n">downdf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">g</span><span class="p">:</span> <span class="p">{</span><span class="n">m</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">demand_rt</span><span class="p">[</span><span class="n">s</span><span class="p">]:</span> <span class="n">m</span><span class="o">.</span><span class="n">submodels</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt_down</span><span class="p">[</span><span class="n">g</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarios</span><span class="p">}</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">generators</span><span class="p">})</span>
+
+<span class="n">dacost</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ObjVal</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">alpha</span><span class="o">.</span><span class="n">x</span>
+<span class="n">rscostseries</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="n">m</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">demand_rt</span><span class="p">[</span><span class="n">s</span><span class="p">]:</span> <span class="nb">sum</span><span class="p">(</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">geninfo</span><span class="o">.</span><span class="n">price</span><span class="p">[</span><span class="n">g</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">submodels</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt</span><span class="p">[</span><span class="n">g</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">geninfo</span><span class="o">.</span><span class="n">uppremium</span><span class="p">[</span><span class="n">g</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">submodels</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt_up</span><span class="p">[</span><span class="n">g</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">geninfo</span><span class="o">.</span><span class="n">downpremium</span><span class="p">[</span><span class="n">g</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">submodels</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">gprod_rt_down</span><span class="p">[</span><span class="n">g</span><span class="p">]</span><span class="o">.</span><span class="n">x</span>
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">generators</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">scenarios</span><span class="p">})</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">ion</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">221</span><span class="p">)</span>
+<span class="n">rtdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Realised real-time demand [MW]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Generator setting [MW]&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">222</span><span class="p">)</span>
+<span class="n">rscostseries</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Realised real-time demand [MW]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Final cost [$]&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">223</span><span class="p">)</span>
+<span class="n">updf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Realised real-time demand [MW]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Generator upregulation [MW]&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">224</span><span class="p">)</span>
+<span class="n">downdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Realised real-time demand [MW]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Generator downregulation [MW]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="n">m</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">Params</span><span class="o">.</span><span class="n">OutputFlag</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">m</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">demands</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">160</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">81</span><span class="p">)</span>
+<span class="n">costs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">demand</span> <span class="ow">in</span> <span class="n">demands</span><span class="p">:</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">load_da</span><span class="o">.</span><span class="n">ub</span> <span class="o">=</span> <span class="n">demand</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">load_da</span><span class="o">.</span><span class="n">lb</span> <span class="o">=</span> <span class="n">demand</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">_clear_cuts</span><span class="p">()</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+    <span class="n">costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">m</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ObjVal</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">load_da</span><span class="o">.</span><span class="n">ub</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">m</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">load_da</span><span class="o">.</span><span class="n">lb</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">demands</span><span class="p">,</span> <span class="n">costs</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Social Welfare [$]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Demand cleared in DA market [MW]&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+********
+* Benders&#39; step 1:
+* Upper bound: -194905.0151374541
+* Lower bound: -396000.0
+********
+********
+* Benders&#39; step 2:
+* Upper bound: -187402.87165686628
+* Lower bound: -195412.41513745408
+********
+********
+* Benders&#39; step 3:
+* Upper bound: -190056.8887556546
+* Lower bound: -195394.04089071462
+********
+********
+* Benders&#39; step 4:
+* Upper bound: -190189.18706464546
+* Lower bound: -195387.0448463883
+********
+********
+* Benders&#39; step 5:
+* Upper bound: -191926.79858712998
+* Lower bound: -195371.37543796783
+********
+********
+* Benders&#39; step 6:
+* Upper bound: -193053.94425360794
+* Lower bound: -195252.92352163696
+********
+********
+* Benders&#39; step 7:
+* Upper bound: -193094.90138226718
+* Lower bound: -195252.59889917375
+********
+********
+* Benders&#39; step 8:
+* Upper bound: -193758.79224701668
+* Lower bound: -195237.6931196585
+********
+********
+* Benders&#39; step 9:
+* Upper bound: -193659.98456954808
+* Lower bound: -195220.181321286
+********
+********
+* Benders&#39; step 10:
+* Upper bound: -194260.30295156644
+* Lower bound: -195202.9596396856
+********
+********
+* Benders&#39; step 11:
+* Upper bound: -194459.43108348924
+* Lower bound: -195111.2427179468
+********
+********
+* Benders&#39; step 12:
+* Upper bound: -194405.62220426043
+* Lower bound: -195073.99413989688
+********
+********
+* Benders&#39; step 13:
+* Upper bound: -194510.54007723092
+* Lower bound: -195072.45353457573
+********
+********
+* Benders&#39; step 14:
+* Upper bound: -194758.666887083
+* Lower bound: -195065.588551258
+********
+********
+* Benders&#39; step 15:
+* Upper bound: -194781.09309929312
+* Lower bound: -194987.81892669486
+********
+********
+* Benders&#39; step 16:
+* Upper bound: -194817.49128958743
+* Lower bound: -194980.491941937
+********
+********
+* Benders&#39; step 17:
+* Upper bound: -194853.54839749951
+* Lower bound: -194972.91244241988
+********
+********
+* Benders&#39; step 18:
+* Upper bound: -194894.67175970715
+* Lower bound: -194915.2602827549
+********
+********
+* Benders&#39; step 19:
+* Upper bound: -194901.65770319957
+* Lower bound: -194910.86229620536
+********
+********
+* Benders&#39; step 20:
+* Upper bound: -194904.55696394757
+* Lower bound: -194905.12253416877
+********
+********
+* Benders&#39; step 21:
+* Upper bound: -194905.00495542135
+* Lower bound: -194905.0276661433
+********
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Text(0.5, 0, &#39;Demand cleared in DA market [MW]&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/docs_decomposition_5_2.png" src="../_images/docs_decomposition_5_2.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/docs_decomposition_5_3.png" src="../_images/docs_decomposition_5_3.png" />
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="conic_programming.html" class="btn btn-neutral float-left" title="Conic Programming" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Ming Zhao
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

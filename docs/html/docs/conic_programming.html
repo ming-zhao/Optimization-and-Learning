@@ -1,0 +1,1161 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Conic Programming &mdash; Optimization and Learning 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/@jupyter-widgets/html-manager@^0.14.0/dist/embed-amd.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"equationNumbers": {"autoNumber": "AMS", "useLabelIds": true}}, "tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Decomposition Methods" href="decomposition.html" />
+    <link rel="prev" title="Advanced Deep-Learning by Keras" href="keras.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Optimization and Learning
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Optimization and Learning</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear_regression.html">Linear Models for Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear_classification.html">Linear Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear_programming.html">Linear Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neural_networks.html">Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convnet.html">Convolutional Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="text_mining.html">Text Mining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keras.html">Advanced Deep-Learning by Keras</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Conic Programming</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Formulation">Formulation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Semi-definite-Programming-(SDP)">Semi-definite Programming (SDP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Second-Order-Cone-Programming-(SOCP)">Second-Order Cone Programming (SOCP)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Duality">Duality</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Semi-definite-Programming-(SDP)">Semi-definite Programming (SDP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Lagrangian">Lagrangian</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Conic-Lagrangian">Conic Lagrangian</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Strong-Duality">Strong Duality</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Conic-Programming">Conic Programming</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Applications">Applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Eigenvalue-Problem">Eigenvalue Problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Robust-Linear-Programming">Robust Linear Programming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Distributionally-Robust-Optimization">Distributionally Robust Optimization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="decomposition.html">Decomposition Methods</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Optimization and Learning</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Conic Programming</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/docs/conic_programming.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 5ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    background: #f5f5f5;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">run</span> ../initscript.py
+<span class="n">toggle</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<script>
+  var password,
+      teacher_mode,
+      isHtml;
+
+  var class_output,
+      class_input,
+      class_answer;
+
+  function code_toggle(e) {
+    var orig_e = e;
+    while (!e.closest(class_output).previousElementSibling.classList.contains(class_input)) {
+      e = e.closest(class_output).previousElementSibling;
+    }
+    var target = e.closest(class_output).previousElementSibling;
+    if (target.getAttribute("style") == "" || target.getAttribute("style") == null) {
+      target.style.display = "none";
+      orig_e.innerHTML = 'show code';
+    }
+    else {
+      target.style.removeProperty("display");
+      orig_e.innerHTML = 'hide code';
+    }
+  }
+
+  function hide_comment(e) {
+    teacher_mode = 1;
+    var target = e.closest(class_answer).nextElementSibling;
+    //e.closest(class_output).previousElementSibling.style.display = "none";
+    if (target.getAttribute("style") == "" || target.getAttribute("style") == null) {
+      //target.style.display = "none";
+      e.innerHTML = 'show comment';
+      answer_block = target;
+      //if (isHtml) {
+          while (answer_block.innerHTML.indexOf("blacksquare<") == -1) {
+              answer_block.style.display = "none";
+              answer_block = answer_block.nextElementSibling;
+          }
+      //}
+      answer_block.style.display = "none";
+    }
+    else if (teacher_mode) {
+        e.innerHTML = 'hide comment';
+        //target.style.removeProperty("display");
+        answer_block = target;
+        //if (isHtml) {
+          while (answer_block.innerHTML.indexOf("blacksquare<") == -1) {
+              answer_block.style.removeProperty("display");
+              answer_block = answer_block.nextElementSibling;
+          }
+        //}
+        answer_block.style.removeProperty("display");
+    }
+  }
+
+  function done() {
+    document.getElementById("popup").style.display = "none";
+    var input = document.getElementById("password").value;
+    if (input==password) { teacher_mode=1; alert("Unlocked!");}
+    else { teacher_mode=0; alert("Wrong password!");}
+  };
+
+  function unlock() {
+    document.getElementById("popup").style.display = "block";
+  }
+
+  $(document).ready(function() {
+    $.ajax({
+      type: "GET",
+      url: "https://raw.githubusercontent.com/ming-zhao/ming-zhao.github.io/master/data/course.csv",
+      dataType: "text",
+      success: function(data)
+      {
+        //var items = data.split(',');
+        //var url = window.location.pathname;
+        //var filename = url.substring(url.lastIndexOf('/')+1);
+        password='a';
+        //for (var i = 0, len = items.length; i < len; ++i) {
+        //    if (filename.includes(items[i].trim()) && i%2==0 && i<items.length) {
+        //        password=items[i+1].trim();
+        //        break;
+        //    }
+        //}
+        var code_blocks = document.getElementsByClassName('nbinput docutils container');
+        if (code_blocks[0]==null) {
+            isHtml=0;
+            code_blocks = document.getElementsByClassName('input');
+            class_output=".output_wrapper";
+            class_input="input";
+            class_answer='.cell';
+        }
+        else {
+            isHtml=1;
+            class_output=".nboutput";
+            class_input="nbinput";
+            class_answer=".nboutput";
+        }
+
+        for (var i = 0, len = code_blocks.length; i < len; ++i) {
+          if (
+              code_blocks[i].innerHTML.indexOf("toggle") !== -1
+              || code_blocks[i].innerHTML.indexOf("button onclick") !== -1
+             ) {
+            code_blocks[i].style.display = "none";
+          }
+        }
+        for (var i = 0, len = code_blocks.length; i < len; ++i) {
+          if (code_blocks[i].innerHTML.indexOf("hide_comment") !== -1) {
+            code_blocks[i].style.display = "none";
+            if (isHtml) {
+              answer_block = code_blocks[i].nextElementSibling.nextElementSibling;
+              while (answer_block.innerHTML.indexOf("blacksquare") == -1) {
+                  answer_block.style.display = "none";
+                  answer_block = answer_block.nextElementSibling;
+              }
+              answer_block.style.display = "none";
+            }
+            else{
+              //code_blocks[i].closest(class_answer).nextElementSibling.style.display = "none";
+              answer_block = code_blocks[i].closest(class_answer).nextElementSibling;
+              while (answer_block.innerHTML.indexOf("blacksquare") == -1) {
+                  answer_block.style.display = "none";
+                  answer_block = answer_block.nextElementSibling;
+              }
+              answer_block.style.display = "none";
+            }
+          }
+        }
+      }
+    });
+  });
+</script></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<a href="#" onclick="code_toggle(this); return false;">show code</a></div>
+</div>
+<div class="section" id="Conic-Programming">
+<h1>Conic Programming<a class="headerlink" href="#Conic-Programming" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Formulation">
+<h2>Formulation<a class="headerlink" href="#Formulation" title="Permalink to this headline">¶</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(A \in \Re^{n \times m}\)</span>, <span class="math notranslate nohighlight">\(b \in \Re^m\)</span> and <span class="math notranslate nohighlight">\(c \in \Re^n\)</span>. A standard conic programming problem takes the form</p>
+<p><span class="math">\begin{align}
+p^\ast = \min_{x \in \Re^n} c^\intercal x : Ax = b, ~ x \in K, \nonumber
+\end{align}</span></p>
+<p>where <span class="math notranslate nohighlight">\(K \subseteq \Re^n\)</span> is a convex cone. That is, <span class="math notranslate nohighlight">\(K\)</span> is a convex set with the property that for all <span class="math notranslate nohighlight">\(x \in K\)</span>, <span class="math notranslate nohighlight">\(\lambda x \in K\)</span> for all <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span>.</p>
+<div class="section" id="Semi-definite-Programming-(SDP)">
+<h3>Semi-definite Programming (SDP)<a class="headerlink" href="#Semi-definite-Programming-(SDP)" title="Permalink to this headline">¶</a></h3>
+<p>Given symmetric matrics <span class="math notranslate nohighlight">\(C, A^\ell \in \Re^{n \times n}\)</span> and <span class="math notranslate nohighlight">\(b_\ell \in \Re^m\)</span>. Consider the SDP in standard form</p>
+<p><span class="math">\begin{align}
+p^* = \min_{X} \langle C, X\rangle : \langle A^\ell, ~X\rangle = b_\ell, ~\ell=1, \ldots, L, ~X \succeq 0 \nonumber
+\end{align}</span></p>
+<p>where <span class="math notranslate nohighlight">\(\langle A, B\rangle = \text{Tr} (A^\intercal B)\)</span>.</p>
+<p>SDP is a special case of conic programming because</p>
+<p><span class="math">\begin{align*}
+\langle C, X\rangle &= \sum_{i=1}^{n} \sum_{j=1}^{n} C_{ij} X_{ji} \\
+\langle A^\ell, X\rangle &= \sum_{i=1}^{n} \sum_{j=1}^{n} A^\ell_{ij} X_{ji} \\
+X \in \text{ cone } K &= \{ X \in \Re^{n \times n}: v^\intercal X v \ge 0,\ \forall v \in \Re^n \}
+\end{align*}</span></p>
+</div>
+<div class="section" id="Second-Order-Cone-Programming-(SOCP)">
+<h3>Second-Order Cone Programming (SOCP)<a class="headerlink" href="#Second-Order-Cone-Programming-(SOCP)" title="Permalink to this headline">¶</a></h3>
+<p>A standard form for the SOCP model is</p>
+<p><span class="math">\begin{align*}
+p^\ast = \min_{x \in \mathbb{R}^n} c^\intercal x : Ax = b, \lVert C_\ell x + d_\ell \rVert_2 \le e^\intercal_\ell x + f_\ell,\ \ell = 1, \ldots, L.
+\end{align*}</span></p>
+<p>SOCP is a special case of conic programming with cone</p>
+<p><span class="math">\begin{align*}
+\mathcal{L}^{n+1} = \left\{ (y,t) | \lVert y \rVert_2 \le t \right\}
+\end{align*}</span></p>
+<p>and <span class="math notranslate nohighlight">\((C_\ell x + d_\ell, e^\intercal_\ell x + f_\ell) \in \mathcal{L}^{n+1}\)</span>.</p>
+<p>SOCP is a special case of SDP.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">hide_comment</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<a href="#" onclick="hide_comment(this); return false;">show comment</a></div>
+</div>
+<p>Let us use Schur complemets to show that SOCP is a special case of SDP.</p>
+<p><strong>Schur complement</strong>: Given a symmetric block matrix <span class="math">\begin{align*}
+X = \left( \begin{array}{ll}
+A_{p\times p} & B \\
+B^\intercal & C_{q\times q}
+\end{array} \right)
+\end{align*}</span></p>
+<p>with det<span class="math notranslate nohighlight">\((A) \neq 0\)</span>, the matrix <span class="math notranslate nohighlight">\(S = C - B^\intercal A^{-1} B\)</span> is the Schur complement of <span class="math notranslate nohighlight">\(A\)</span> in <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p><strong>Lemma</strong>: If <span class="math notranslate nohighlight">\(A \succ 0\)</span>, then <span class="math notranslate nohighlight">\(X \succeq 0 \Leftrightarrow S \succeq 0\)</span>.</p>
+<p><strong>Proof</strong>: Let <span class="math notranslate nohighlight">\(f_v = \min_u f(u, v)\)</span> where</p>
+<p><span class="math">\begin{align*}
+f(u, v) = \left( u^\intercal, v^\intercal \right) \left( \begin{array}{ll}
+A_{p\times p} & B \\
+B^\intercal & C_{q\times q}
+\end{array} \right)
+\left( \begin{array}{l}
+u \\
+v
+\end{array} \right)
+= u^\intercal A u + 2 v^\intercal B^\intercal u + v^\intercal C v.
+\end{align*}</span></p>
+<p>Since <span class="math notranslate nohighlight">\(A \succ 0\)</span>, <span class="math notranslate nohighlight">\(f\)</span> is strictly convex in <span class="math notranslate nohighlight">\(u\)</span> and it exists a unique global optimal as follows</p>
+<p><span class="math">\begin{align*}
+\frac{\partial f}{\partial u} & = 2 A u + 2 B v = 0 \Rightarrow u^* = - A^{-1} B v \\
+f_v &= v^\intercal B^\intercal A^{-1} B v - 2 v^\intercal B^\intercal A^{-1} B v + v^\intercal C v \\
+&= v^\intercal (C - B^\intercal A^{-1} B) v = v^\intercal S v
+\end{align*}</span></p>
+<p>(<span class="math notranslate nohighlight">\(\Rightarrow\)</span>) If <span class="math notranslate nohighlight">\(S \not\succeq 0\)</span>, then <span class="math notranslate nohighlight">\(\exists v_0\)</span> such that <span class="math notranslate nohighlight">\(v_0^\intercal S v_0 &lt; 0 \Rightarrow f_{v_0} &lt; 0\)</span>. We have a contradiction because <span class="math notranslate nohighlight">\(f_{v_0} = z^\intercal X z &lt; 0\)</span> with</p>
+<p><span class="math">\begin{align*}
+z = \left( \begin{array}{l}
+u \\
+v
+\end{array} \right) = \left( \begin{array}{c}
+- A^{-1} B v_0 \\
+v_0
+\end{array} \right)
+\end{align*}</span></p>
+<p>(<span class="math notranslate nohighlight">\(\Leftarrow\)</span>) If <span class="math notranslate nohighlight">\(S \succeq 0\)</span>, then any <span class="math notranslate nohighlight">\((u, v)\)</span> gives</p>
+<p><span class="math">\begin{align*}
+\left( \begin{array}{l}
+u \\
+v
+\end{array} \right)^\intercal X \left( \begin{array}{l}
+u \\
+v
+\end{array} \right) \ge f_v = v^\intercal S v \ge 0 \Rightarrow X \succeq 0
+\end{align*}</span></p>
+<p>■</p>
+<p>Now, we assume</p>
+<p><span class="math">\begin{align}
+e^\intercal_\ell x + f_\ell > 0 \nonumber
+\end{align}</span></p>
+<p>otherwise <span class="math notranslate nohighlight">\(C_\ell x + d_\ell = 0\)</span> and SOCP degenerates to LP.</p>
+<p>We can write the constraint</p>
+<p><span class="math">\begin{align*}
+\lVert C_\ell x + d_\ell \rVert_2 \le e^\intercal_\ell x + f_\ell
+\end{align*}</span></p>
+<p>as</p>
+<p><span class="math">\begin{align*}
+\left( \begin{array}{cc}
+(e^\intercal_\ell x + f_\ell) \texttt{I} &  C_\ell x + d_\ell\\
+(C_\ell x + d_\ell)^\intercal & e^\intercal_\ell x + f_\ell
+\end{array} \right) \succeq 0
+\end{align*}</span></p>
+<p>Because</p>
+<p><span class="math">\begin{align*}
+\left( \begin{array}{cc}
+(e^\intercal_\ell x + f_\ell) \texttt{I} &  C_\ell x + d_\ell\\
+(C_\ell x + d_\ell)^\intercal & e^\intercal_\ell x + f_\ell
+\end{array} \right) \succeq 0 &\Leftrightarrow (e^\intercal_\ell x + f_\ell) - (C_\ell x + d_\ell)^\intercal \frac{1}{e^\intercal_\ell x + f_\ell} (C_\ell x + d_\ell) \ge 0 \\
+& \Leftrightarrow \lVert C_\ell x + d_\ell \rVert_2^2 \le (e^\intercal_\ell x + f_\ell)^2 \\
+& \Leftrightarrow \lVert C_\ell x + d_\ell \rVert_2 \le e^\intercal_\ell x + f_\ell,
+\end{align*}</span></p>
+<p>where the last <span class="math notranslate nohighlight">\(\Leftrightarrow\)</span> holds because both terms are positive. Therefore, SOCP is a special case of SDP.</p>
+<p><span class="math notranslate nohighlight">\(\blacksquare\)</span></p>
+<p>Convex quadratic constrained quadratic programming (QCQP) is a special case of SOCP with <span class="math notranslate nohighlight">\(e_\ell = 0\)</span>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">hide_comment</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<a href="#" onclick="hide_comment(this); return false;">show comment</a></div>
+</div>
+<p>We show that QCQP is a special case of SOCP</p>
+<p><strong>Proof</strong>: First, we show that we can reformulation Hyperbolic Constraints as Second-Order Cone Constraints as follows:</p>
+<p><span class="math">\begin{align*}
+u^\intercal u \le y z, y \ge 0, z \ge 0 \Leftrightarrow \left\lVert \left(\begin{array}{c}
+2u \\
+y - z
+\end{array} \right) \right\rVert_2 \le y+z, y \ge 0, z \ge 0
+\end{align*}</span></p>
+<p><span class="math notranslate nohighlight">\(\Leftrightarrow\)</span> holds because</p>
+<p><span class="math">\begin{align*}
+4 u^\intercal u \le 4 y z = (y+z)^2 - (y-z)^2 & \Leftrightarrow 4 u^\intercal u + (y-z)^2 \le (y+z)^2 \\
+& \Leftrightarrow \sqrt{4 u^\intercal u + (y-z)^2} \le y+z \\
+& \Leftrightarrow \left\lVert \left(\begin{array}{c}
+2u \\
+y - z
+\end{array} \right) \right\rVert_2 \le y+z
+\end{align*}</span></p>
+<p>Then, consider a QCQP</p>
+<p><span class="math">\begin{align*}
+\min_x x^\intercal Q x + c^\intercal x: Ax = b,\ x \ge 0
+\end{align*}</span></p>
+<p>is equivalent to</p>
+<p><span class="math">\begin{align*}
+\min_x t + c^\intercal x: Ax = b,\ t \ge x^\intercal Q x,\ x \ge 0,
+\end{align*}</span></p>
+<p>we only need to show that the quadratic constraint <span class="math notranslate nohighlight">\(t \ge x^\intercal Q x\)</span> is a SOC constraint. Since <span class="math notranslate nohighlight">\(Q\)</span> is positive semidefinite, Cholesky decomposition gives <span class="math notranslate nohighlight">\(Q = L L^\intercal\)</span>. With <span class="math notranslate nohighlight">\(u = L^\intercal x\)</span></p>
+<p><span class="math">\begin{align*}
+t \ge x^\intercal Q x &\Leftrightarrow t \cdot 1 \ge u^\intercal u,\ t \ge 0 \\
+&\Leftrightarrow \left\lVert \left(\begin{array}{c}
+2u \\
+t - 1
+\end{array} \right) \right\rVert_2 \le t+1, t \ge 0
+\end{align*}</span></p>
+<p>■</p>
+<p>However, SOCP <strong>cannot</strong>, in general, be cast as QCQP. One may be tempted to square the SCO constraints and obtain a quadratic constraint of the form</p>
+<p><span class="math">\begin{align*}
+\lVert C_\ell x + d_\ell \rVert_2^2 \le (e^\intercal_\ell x + f_\ell)^2, \ e^\intercal_\ell x + f_\ell \ge 0.
+\end{align*}</span></p>
+<p>While the constraints are equivalent to the original SOC constraint, the first may not be convex. Consider the quadratic terms in each side of the inequality. We have</p>
+<p><span class="math">\begin{align*}
+x^\intercal C^\intercal_\ell C_\ell x + \cdots \le x^\intercal e_\ell e_\ell^\intercal x + \cdots
+\end{align*}</span></p>
+<p>It is convex only if <span class="math notranslate nohighlight">\(C^\intercal_\ell C_\ell - e_\ell e_\ell^\intercal \succeq 0\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\blacksquare\)</span></p>
+</div>
+</div>
+<div class="section" id="Duality">
+<h2>Duality<a class="headerlink" href="#Duality" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Semi-definite-Programming-(SDP)">
+<h3>Semi-definite Programming (SDP)<a class="headerlink" href="#Semi-definite-Programming-(SDP)" title="Permalink to this headline">¶</a></h3>
+<p>Consider an SDP <span class="math">\begin{align}
+p^* = \min_{X} \langle C, X\rangle : \langle A^\ell, ~X\rangle = b_\ell, ~\ell=1, \ldots, L, ~X \succeq 0 \nonumber
+\end{align}</span></p>
+<p>The dual problem is also an SDP as follows <span class="math">\begin{align}
+d^\ast = \max_{\nu} \nu^\intercal b: \sum_{\ell=1}^{L} \nu_\ell A^\ell \preceq C \nonumber
+\end{align}</span></p>
+</div>
+<div class="section" id="Lagrangian">
+<h3>Lagrangian<a class="headerlink" href="#Lagrangian" title="Permalink to this headline">¶</a></h3>
+<p><span class="math">\begin{align}
+\mathcal{L}(X, \lambda, \nu) & = \langle C,X\rangle + \sum_{\ell=1}^{L} \nu_\ell (b_\ell - \langle A^\ell, X\rangle) - \lambda \cdot \lambda_{\min} (X) \nonumber \\
+& = \nu^\intercal b + \left\langle C - \sum_{\ell=1}^{L} \nu_\ell A^\ell, X \right\rangle - \lambda \cdot \lambda_{\min} (X) \nonumber
+\end{align}</span></p>
+<p>where <span class="math notranslate nohighlight">\(\nu \in \mathbb{R}^m\)</span> and <span class="math notranslate nohighlight">\(\lambda \ge 0\)</span> are the dual variables, <span class="math notranslate nohighlight">\(\lambda_{\min}(X)\)</span> is the smallest eigenvalue of <span class="math notranslate nohighlight">\(X\)</span>. We have used <span class="math notranslate nohighlight">\(\lambda_{\min}(X) \ge 0\)</span> is equivalent to <span class="math notranslate nohighlight">\(X \succeq 0\)</span>.</p>
+<p><span class="math">\begin{align*}
+p^\ast & = \min_{X} \max_{\nu, \lambda \ge 0} \mathcal{L}(X, \lambda, \nu)\\
+& \ge \max_{\nu, \lambda \ge 0} \min_{X} \mathcal{L}(X, \lambda, \nu)\\
+& = d^\ast
+\end{align*}</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">hide_comment</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<a href="#" onclick="hide_comment(this); return false;">show comment</a></div>
+</div>
+<p>We show the min-max and max-min relationship</p>
+<p><strong>Proof</strong></p>
+<p>For any <span class="math notranslate nohighlight">\(X^0, \lambda^0, \nu^0\)</span>,</p>
+<p><span class="math">\begin{align*}
+&&\ \mathcal{L}(X^0, \lambda^0, \nu^0) &\ge \min_{X} \mathcal{L}(X, \lambda^0, \nu^0) \\
+\Rightarrow &&\ \max_{\nu, \lambda \ge 0} \mathcal{L}(X^0, \lambda, \nu) &\ge \max_{\nu, \lambda \ge 0} \min_{X} \mathcal{L}(X, \lambda, \nu) \\
+\Rightarrow &&\ \min_{X} \max_{\nu, \lambda \ge 0} \mathcal{L}(X, \lambda, \nu) &\ge \max_{\nu, \lambda \ge 0} \min_{X} \mathcal{L}(X, \lambda, \nu) \\
+\end{align*}</span></p>
+<p>■</p>
+<p>We show that <span class="math notranslate nohighlight">\(\lambda_{\min}(\cdot)\)</span> can be represented as an optimization problem.</p>
+<p><strong>Lemma</strong>: Let <span class="math notranslate nohighlight">\(A\)</span> be a symmetric matrix and <span class="math notranslate nohighlight">\(\lambda_{\min}(A)\)</span> is the smallest eigenvalue of <span class="math notranslate nohighlight">\(A\)</span>. We have</p>
+<p><span class="math">\begin{align}
+\lambda_{\min}(A) = \min_{Y} \langle Y, A\rangle: Y \succeq 0,\ \textbf{Tr}Y = 1 \nonumber
+\end{align}</span></p>
+<p><strong>Proof</strong> <span class="math notranslate nohighlight">\(A = P \Lambda P^\intercal\)</span> where <span class="math notranslate nohighlight">\(P\)</span> is orthogonal matrix and <span class="math notranslate nohighlight">\(\Lambda = \text{diag}(\lambda_1,\ldots,\lambda_n)\)</span></p>
+<p><span class="math">\begin{align*}
+\text{Tr}(YA) = \text{Tr}(Y P \Lambda P^\intercal) = \text{Tr}(P^\intercal Y P \Lambda) = \text{Tr}(Y^{\prime} \Lambda )
+\end{align*}</span></p>
+<p>Since <span class="math notranslate nohighlight">\(Y^{\prime} \succeq 0\)</span> and <span class="math notranslate nohighlight">\(\textbf{Tr}Y^{\prime} = 1\)</span>, we can assume that <span class="math notranslate nohighlight">\(A\)</span> is diagonal without loss of generality.</p>
+<p>When <span class="math notranslate nohighlight">\(A\)</span> is diagonal, <span class="math notranslate nohighlight">\((YA)_{ii} = Y_{ii} A_{ii}\)</span> and <span class="math notranslate nohighlight">\(\text{Tr}(YA) = \sum_{i} Y_{ii} A_{ii}\)</span>. Then, we can restrict <span class="math notranslate nohighlight">\(Y\)</span> to be diagonal as well. So</p>
+<p><span class="math">\begin{align*}
+\min_{Y} \langle Y, A\rangle: Y \succeq 0,\ \textbf{Tr}Y = 1 \Leftrightarrow \min_{Y} \sum_{i} Y_i \lambda_i : Y_i \ge 0,\ \sum_{i} Y_i = 1,
+\end{align*}</span></p>
+<p>which is <span class="math notranslate nohighlight">\(\lambda_{\min}(A)\)</span>. The lemma is proved.</p>
+<p>■</p>
+<hr><p><strong>Lemma</strong>:</p>
+<p><span class="math">\begin{align*}
+p^\ast = \min_{X} \max_{\nu, \lambda \ge 0} \mathcal{L}(X, \lambda, \nu)
+\end{align*}</span></p>
+<p><strong>Proof</strong>:</p>
+<p><span class="math">\begin{align}
+\min_{X} \max_{\nu, \lambda \ge 0} \mathcal{L}(X, \lambda, \nu)& = \min_{X} \max_{\nu, \lambda \ge 0} \langle C,X\rangle + \sum_{\ell=1}^{L} \nu_\ell (b_\ell - \langle A^\ell, X\rangle) - \lambda \cdot \lambda_{\min} (X) \nonumber \\
+&= \min_{X} \left\{ \begin{aligned}
+&\langle C,X\rangle + \sum_{\ell=1}^{L} \nu_\ell (b_\ell - \langle A^\ell, X\rangle) && \text{if } \lambda_{\min} (X) \ge 0 \Rightarrow X \succeq 0 \\
+& \infty && \text{otherwise}
+\end{aligned} \right. \nonumber \\
+&=\min_{X \succeq 0} \max_{\nu} \langle C,X\rangle + \sum_{\ell=1}^{L} \nu_\ell (b_\ell - \langle A^\ell, X\rangle) \nonumber \\
+&= \min_{X \succeq 0} \left\{\begin{aligned}
+&\langle C,X\rangle && \text{if } \langle A^\ell, X\rangle = b_\ell, ~\ell=1, \ldots, L \\
+& -\infty && \text{otherwise}
+\end{aligned} \right. \nonumber \\
+&= \min_{X \succeq 0} \langle C, X\rangle : \langle A^\ell, ~X\rangle = b_\ell, ~\ell=1, \ldots, \ell \nonumber \\
+&= p^\ast \nonumber
+\end{align}</span></p>
+<p>The fourth equality holds because an optimal solution may be <span class="math notranslate nohighlight">\(v_i = 0\)</span> if <span class="math notranslate nohighlight">\(b_i - \langle A_i, X\rangle = 0\)</span> and <span class="math notranslate nohighlight">\(v_i = -t \cdot \text{sign}(b_i - \langle A_i, X\rangle)\)</span> otherwise with <span class="math notranslate nohighlight">\(t \to \infty\)</span>.</p>
+<p>■</p>
+<hr><p><strong>Lemma</strong>:</p>
+<p><span class="math">\begin{align*}
+d^\ast=\max_{\nu, \lambda \ge 0} \min_{X} \mathcal{L}(X, \lambda, \nu)
+\end{align*}</span></p>
+<hr><p><strong>Proof</strong>:</p>
+<p>For notational convenience, we let</p>
+<p><span class="math">\begin{align}
+Z &= C - \sum_{\ell=1}^{L} \nu_\ell A^\ell \nonumber \\
+G(\lambda, Z) &= \min_{X} ( \langle Z, X \rangle - \lambda \cdot \lambda_{\min} (X) ) \nonumber
+\end{align}</span></p>
+<p>where <span class="math notranslate nohighlight">\(G(\lambda, \cdot)\)</span> is the conjugate of the concave function <span class="math notranslate nohighlight">\(\lambda \cdot \lambda_{\min} (X)\)</span>.</p>
+<p>The conjugate <span class="math notranslate nohighlight">\(f^\ast\)</span> of a function <span class="math notranslate nohighlight">\(f\)</span> is given by <span class="math">\begin{align}
+f^\ast(y) = \sup_{x \in \textbf{dom} f} (y^\intercal x - f(x)) \nonumber
+\end{align}</span></p>
+<p>and</p>
+<p><span class="math">\begin{align*}
+G(\lambda, \cdot) &= \max_{X} ( \langle \cdot, -X \rangle + \lambda \cdot \lambda_{\min} (X) )
+\end{align*}</span></p>
+<p>Suppose we can show that</p>
+<p><span class="math">\begin{align}
+G(\lambda, Z) = \left\{ \begin{aligned}
+&0 && \textrm{if } \textrm{Tr}(Z) = \lambda \ge 0, Z \succeq 0, \text{ i.e., } Z \in \mathcal{Z}(\lambda) \\
+&-\infty && \textrm{otherwise}
+\end{aligned} \right. \nonumber
+\end{align}</span></p>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{Z}(\lambda) = \{Z: \textrm{Tr}(Z) = \lambda \ge 0, Z \succeq 0\}\)</span>. Then,</p>
+<p><span class="math">\begin{align*}
+\max_{\nu, \lambda \ge 0} \min_{X} \mathcal{L}(X, \lambda, \nu) &= \max_{\nu, \lambda \ge 0} \nu^\intercal b + G(\lambda, Z) \\
+&= \max_{\nu, \lambda \ge 0} \nu^\intercal b: Z = C - \sum_{i=1}^{m} \nu_i A_i \succeq 0, \textrm{Tr}(Z) = \lambda \ge 0 \\
+&= \max_{\nu} \nu^\intercal b: C - \sum_{i=1}^{m} \nu_i A_i \succeq 0 \\
+&= d^*
+\end{align*}</span></p>
+<p>where <span class="math notranslate nohighlight">\(\lambda\)</span> can be eliminated because <span class="math notranslate nohighlight">\(Z \succeq 0\)</span> implies <span class="math notranslate nohighlight">\(\textrm{Tr}(Z) \ge 0\)</span>.</p>
+<hr><p>Now, we will complete the proof by showing that</p>
+<p><span class="math">\begin{align}
+G(\lambda, Z) = \left\{ \begin{aligned}
+&0 && \textrm{if } \textrm{Tr}(Z) = \lambda \ge 0, Z \succeq 0, \text{ i.e., } Z \in \mathcal{Z}(\lambda) \\
+&-\infty && \textrm{otherwise}
+\end{aligned} \right. \label{eqn:g_value}
+\end{align}</span></p>
+<p>Because <span class="math notranslate nohighlight">\(\lambda_{\min}(\cdot)\)</span> can be represented as an optimization problem, we have</p>
+<p><span class="math">\begin{align}
+G(\lambda, Z) & = \min_{X} \left( \langle Z, X \rangle - \lambda \min_{Y \succeq 0, \textbf{Tr} Y = 1} \langle Y, X \rangle \right) = \min_{X} \max_{Y \succeq 0, \textbf{Tr} Y = 1} \langle Z - \lambda Y, X \rangle \nonumber \\
+& = \min_{X} \max_{Y \succeq 0, \textbf{Tr} Y = \lambda} \langle Z - Y, X \rangle \nonumber \\
+& \ge \max_{Y \succeq 0, \textbf{Tr} Y = \lambda} \min_{X \succeq 0} \langle Z - Y, X \rangle \nonumber \\
+& = \max_{Y \succeq 0, \textbf{Tr} Y = \lambda} \left\{ \begin{aligned}
+&0 && \text{if } Z = Y, \\
+&-\infty && \text{otherwise}
+\end{aligned} \right. \nonumber \\
+& = \left\{ \begin{aligned}
+&0 && \text{if } \textrm{Tr}(Z) = \lambda \ge 0, Z \succeq 0, \\
+&-\infty && \text{otherwise}
+\end{aligned} \right. \label{eqn:g}
+\end{align}</span></p>
+<p>We prove <span class="math">\eqref{eqn:g_value}</span> in two steps:</p>
+<ol class="arabic simple">
+<li><p><strong>Proof of :math:`G(lambda, Z) = 0` if :math:`Z in mathcal{Z}(lambda)`</strong></p></li>
+</ol>
+<p>Following the definition of <span class="math notranslate nohighlight">\(G(\lambda, Z)\)</span>, <span class="math notranslate nohighlight">\(G(\lambda, Z) \le 0\)</span> since <span class="math notranslate nohighlight">\(X = 0\)</span> is a feasible solution. We also have <span class="math notranslate nohighlight">\(G(\lambda, Z) \ge 0\)</span> because of <span class="math">\eqref{eqn:g}</span>. So <span class="math notranslate nohighlight">\(G(\lambda, Z) = 0\)</span> if <span class="math notranslate nohighlight">\(Z \in \mathcal{Z}(\lambda)\)</span>.</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>Proof of :math:`G(lambda, Z) = -infty` if :math:`Z notin mathcal{Z}(lambda)`</strong></p></li>
+</ol>
+<p>If <span class="math notranslate nohighlight">\(\textrm{Tr}(Z) \neq \lambda\)</span>, choosing <span class="math notranslate nohighlight">\(X = \epsilon t \texttt{I}\)</span> with <span class="math notranslate nohighlight">\(\epsilon = -\text{sign}(\textrm{Tr}(Z) - \lambda)\)</span> and <span class="math notranslate nohighlight">\(t \to +\infty\)</span> implies</p>
+<p><span class="math">\begin{align*}
+G(\lambda, Z) &\le \langle Z, \epsilon t \texttt{I} \rangle - \lambda \cdot \lambda_{\min} (\epsilon t \texttt{I}) \\
+& = -t |\textrm{Tr}(Z) + \lambda| \to \infty
+\end{align*}</span></p>
+<p>If <span class="math notranslate nohighlight">\(\textrm{Tr}(Z) = \lambda\)</span>, but <span class="math notranslate nohighlight">\(Z \not\succeq 0\)</span> (i.e., <span class="math notranslate nohighlight">\(\lambda_{\max} (Z) &lt; 0\)</span>), let <span class="math notranslate nohighlight">\(X = t u u^\intercal\)</span>, where <span class="math notranslate nohighlight">\(u\)</span> is an unit-norm (<span class="math notranslate nohighlight">\(\lVert u^\intercal u \rVert = 1\)</span>) eigenvector corresponding to <span class="math notranslate nohighlight">\(\lambda_{\max} (Z)\)</span> and <span class="math notranslate nohighlight">\(t \to +\infty\)</span>. We have</p>
+<p><span class="math">\begin{align}
+G(\lambda, Z) &= \min_{X} ( \langle Z, X \rangle - \lambda \cdot \lambda_{\min} (X) ) \le  \langle Z, t u u^\intercal \rangle - \lambda \cdot \lambda_{\min} (t u u^\intercal) \nonumber \\
+&= t \textrm{Tr} (Z^\intercal uu^\intercal) = t \lambda_{\max}(Z) \to -\infty \nonumber
+\end{align}</span></p>
+<p>because</p>
+<p><span class="math">\begin{align*}
+\textrm{Tr} (Z^\intercal uu^\intercal) &= \textrm{Tr} (uu^\intercal Z^\intercal ) = \textrm{Tr} (u (Zu)^\intercal) = \textrm{Tr} (u \lambda_{\max}(Z) u^\intercal) \\
+& = \lambda_{\max}(Z) \textrm{Tr} (u u^\intercal) = \lambda_{\max}(Z) \textrm{Tr} (u^\intercal u) = \lambda_{\max}(Z)
+\end{align*}</span></p>
+<p>and <span class="math notranslate nohighlight">\(\lambda_{\min} (u u^\intercal) = 0\)</span> because <span class="math notranslate nohighlight">\(u u^\intercal\)</span> is rank one matrix.</p>
+<p>■</p>
+<p><strong>Lemma</strong>: <span class="math notranslate nohighlight">\(\lambda_{\min}\)</span> is concave, i.e., <span class="math notranslate nohighlight">\(\lambda_{\min}\left(\frac{1}{2}A_1 + \frac{1}{2}A_2\right) \ge \frac{1}{2}\lambda_{\min}(A_1) + \frac{1}{2}\lambda_{\min}(A_2)\)</span></p>
+<p><strong>Proof</strong>: Let <span class="math notranslate nohighlight">\(\mathcal{Y} = \{Y: Y \succeq 0, \textbf{Tr}Y = 1 \}\)</span>. We have <span class="math">\begin{align}
+\min_{Y \in \mathcal{Y}} \left\langle Y, \frac{1}{2}A_1 + \frac{1}{2}A_2 \right\rangle = \min_{Y \in \mathcal{Y}} \left( \frac{1}{2} \left\langle Y, A_1 \right\rangle + \frac{1}{2} \left\langle Y, A_2 \right\rangle \right) \nonumber
+\end{align}</span></p>
+<p>Since, for any <span class="math notranslate nohighlight">\(Y \in \mathcal{Y}\)</span>, <span class="math">\begin{align}
+&& \frac{1}{2} \left\langle Y, A_1 \right\rangle + \frac{1}{2} \left\langle Y, A_2 \right\rangle &\ge \frac{1}{2} \min_{Y \in \mathcal{Y}} \left\langle Y, A_1 \right\rangle + \frac{1}{2} \min_{Y \in \mathcal{Y}} \left\langle Y, A_2 \right\rangle \nonumber \\
+\Rightarrow && \min_{Y \in \mathcal{Y}} \left( \frac{1}{2} \left\langle Y, A_1 \right\rangle + \frac{1}{2} \left\langle Y, A_2 \right\rangle \right) & \ge \frac{1}{2} \min_{Y \in \mathcal{Y}} \left\langle Y, A_1 \right\rangle + \frac{1}{2} \min_{Y \in \mathcal{Y}} \left\langle Y, A_2 \right\rangle \nonumber
+\end{align}</span></p>
+<p><span class="math notranslate nohighlight">\(\blacksquare\)</span></p>
+</div>
+<div class="section" id="Conic-Lagrangian">
+<h3>Conic Lagrangian<a class="headerlink" href="#Conic-Lagrangian" title="Permalink to this headline">¶</a></h3>
+<p><span class="math">\begin{align}
+\mathcal{L}^c(X, \nu, Y) & = \langle C,X\rangle + \sum_{\ell=1}^{L} \nu_\ell (b_\ell - \langle A^\ell, X\rangle) -  \langle Y,X\rangle \nonumber \\
+& = \nu^\intercal b + \left\langle C - \sum_{\ell=1}^{L} \nu_\ell A^\ell, X \right\rangle - \langle Y,X\rangle \nonumber
+\end{align}</span></p>
+<p>where now we associate a matrix dual variable <span class="math notranslate nohighlight">\(Y \succeq 0\)</span> to the constraint <span class="math notranslate nohighlight">\(X \succeq 0\)</span>.</p>
+<p><span class="math">\begin{align*}
+p^\ast &= \min_{X \succeq 0} \max_{\nu, Y \succeq 0} \mathcal{L}^c(X, \nu, Y)  \\
+& \ge \max_{\nu, Y \succeq 0} \min_{X \succeq 0} \mathcal{L}^c(X, \nu, Y) \\
+& = d^\ast
+\end{align*}</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">hide_comment</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<a href="#" onclick="hide_comment(this); return false;">show comment</a></div>
+</div>
+<p><strong>Lemma</strong></p>
+<p><span class="math">\begin{align*}
+p^\ast = \min_{X} \max_{\nu, Y \succeq 0} \mathcal{L}^c(X, \nu, Y)
+\end{align*}</span></p>
+<p><strong>Proof</strong> Recall the lemma that <span class="math notranslate nohighlight">\(\lambda_{\min}(\cdot)\)</span> is represented as an optimization problem.</p>
+<p>We have <span class="math">\begin{align}
+\min_{Y \succeq 0} \langle Y, X\rangle = \min_{t \ge 0} \min_{Y \succeq 0, \textbf{Tr} Y = t} \langle Y, X\rangle = \min_{t \ge 0} t \lambda_{\min}(X) =
+\left\{
+\begin{aligned}
+&0           && \text{if } X \succeq 0 \\
+&-\infty && \text{otherwise.}
+\end{aligned}
+\right. \nonumber
+\end{align}</span></p>
+<p>Therefore, we get <span class="math">\begin{align}
+\min_{X} \max_{\nu, Y \succeq 0} \mathcal{L}^c(X, \nu, Y) &= \min_{X} \max_{\nu, Y \succeq 0} \left( \langle C,X\rangle + \sum_{\ell=1}^{L} \nu_\ell (b_\ell - \langle A^\ell, X\rangle) -  \langle Y,X\rangle \right) \nonumber \\
+& = \min_{X \succeq 0} \max_{\nu} \left( \langle C,X\rangle + \sum_{\ell=1}^{L} \nu_\ell (b_\ell - \langle A^\ell, X\rangle) \right) \nonumber \\
+&= \min_{X} \left\{\begin{aligned}
+&\langle C,X\rangle && \text{if } \langle A^\ell, X\rangle = b_\ell, ~\ell=1, \ldots, L \\
+& -\infty && otherwise
+\end{aligned} \right. \nonumber \\
+&= \min_{X} \langle C, X\rangle : \langle A^\ell, ~X\rangle = b_\ell, ~\ell=1, \ldots, \ell \nonumber \\
+&= p^\ast \nonumber
+\end{align}</span></p>
+<p>■</p>
+<hr><p><strong>Lemma</strong></p>
+<p><span class="math">\begin{align*}
+d^\ast = \max_{\nu, Y \succeq 0} \min_{X} \mathcal{L}^c(X, \nu, Y)
+\end{align*}</span></p>
+<p><strong>Proof</strong></p>
+<p><span class="math">\begin{align}
+\min_{\nu, Y \succeq 0} \max_{X} \mathcal{L}^c(X, \nu, Y) &= \min_{\nu, Y \succeq 0} \max_{X} \left( \nu^\intercal b + \left\langle C - \sum_{\ell=1}^{L} \nu_\ell A^\ell, X \right\rangle - \langle Y,X\rangle \right) \nonumber \\
+& = \min_{\nu} \nu^\intercal b + \min_{\nu, Y \succeq 0} \max_{X} \langle Z-Y, X \rangle \nonumber \\
+& = \min_{\nu} \nu^\intercal b + \left\{
+\begin{aligned}
+&0           && \text{if } Z \succeq 0, \\
+&+\infty && \text{otherwise.}
+\end{aligned}
+\right. \nonumber \\
+&= \min_{\lambda, \nu, Z} \nu^\intercal b: Z = C - \sum_{i=1}^{m} \nu_i A_i \succeq 0 \nonumber\\
+&= d^\ast. \nonumber
+\end{align}</span></p>
+<p><span class="math notranslate nohighlight">\(\blacksquare\)</span></p>
+</div>
+<div class="section" id="Strong-Duality">
+<h3>Strong Duality<a class="headerlink" href="#Strong-Duality" title="Permalink to this headline">¶</a></h3>
+<p>Strong duality can fail. Consider the example <span class="math">\begin{align}
+p^\ast = \min_{x} x_2 : \left(
+\begin{array}{ccc}
+x_2 + 1 & 0 & 0 \\
+0 & x_1 & x_2 \\
+0 & x_2 & 0
+\end{array}
+\right) \succeq 0 \nonumber
+\end{align}</span></p>
+<p>positive-semi definiteness implies <span class="math notranslate nohighlight">\(x_1 \le 0\)</span> and <span class="math notranslate nohighlight">\(x^2_2 \le 0\)</span>. So, <span class="math notranslate nohighlight">\(p^\ast = 0\)</span>.</p>
+<p>The dual is <span class="math">\begin{align}
+d^\ast = \max_{Y \in S^3} - Y_{11}: Y \succeq 0, Y_{22}=0, 1-Y_{11}- 2Y_{23} = 0 \nonumber
+\end{align}</span></p>
+<p>Since <span class="math notranslate nohighlight">\(Y \succeq 0, Y_{22}=0\)</span>, <span class="math notranslate nohighlight">\(Y_{23}= 0\)</span>. Hence, <span class="math notranslate nohighlight">\(d^\ast = - Y_{11} = -1 &lt; p^\ast\)</span>.</p>
+<p><strong>Strong duality holds</strong> if Slater’s condition holds for the primal problem where Slater’s condition states that the feasible region must have an interior point.</p>
+</div>
+<div class="section" id="Conic-Programming">
+<h3>Conic Programming<a class="headerlink" href="#Conic-Programming" title="Permalink to this headline">¶</a></h3>
+<p>Consider a conic programming problem</p>
+<p><span class="math">\begin{align}
+p^\ast = \min_{x \in \Re^n} \langle c, x \rangle : Ax = b, ~ x \in K, \nonumber
+\end{align}</span></p>
+<p>where <span class="math notranslate nohighlight">\(K \subseteq \Re^n\)</span> is a convex cone.</p>
+<p>The dual problem is</p>
+<p><span class="math">\begin{align}
+\max_{y \in \Re^m} \langle b, y \rangle : A^\intercal y + s = c, ~ s \in K^\ast, \nonumber
+\end{align}</span></p>
+<p>where <span class="math notranslate nohighlight">\(K^\ast\)</span> is the dual cone defined by</p>
+<p><span class="math">\begin{align*}
+K^\ast = \{s \in \Re^n: \langle s,x\rangle \ge 0,~ \forall x \in K\}.
+\end{align*}</span></p>
+<p>The Lagrange dual problem is</p>
+<p><span class="math">\begin{align}
+\inf_{x \in K} \mathcal{L}(y) &= \inf_{x \in K} \langle c, x \rangle + \langle y, b-Ax \rangle \nonumber \\
+& = \langle y, b \rangle + \inf_{x \in K} \langle c, x \rangle - \langle y, Ax \rangle = \langle y, b \rangle + \inf_{x \in K} \langle c-A^\intercal y, x \rangle \nonumber
+\end{align}</span></p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(c-A^\intercal y \in K^\ast\)</span>, then <span class="math notranslate nohighlight">\(\langle c-A^Ty, x \rangle\)</span>, so <span class="math notranslate nohighlight">\(\inf_{x \in K} \langle c-A^\intercal y, x \rangle = 0\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(c-A^\intercal y \notin K^\ast\)</span>, then <span class="math notranslate nohighlight">\(\inf_{x \in K} \langle c-A^\intercal y, x \rangle = -\infty\)</span>.</p></li>
+</ul>
+<p>Thus</p>
+<p><span class="math">\begin{align}
+\inf_{x \in K} \mathcal{L}(y) = \left\{ \begin{aligned}
+&\langle y, b \rangle && c-A^\intercal y \in K^\ast \\
+&-\infty && c-A^\intercal y \notin K^\ast
+\end{aligned}\right. \nonumber
+\end{align}</span></p>
+<p>Let <span class="math notranslate nohighlight">\(s = c-A^Ty \in K^\ast\)</span>. Then we obtain the dual problem.</p>
+</div>
+</div>
+<div class="section" id="Applications">
+<h2>Applications<a class="headerlink" href="#Applications" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Eigenvalue-Problem">
+<h3>Eigenvalue Problem<a class="headerlink" href="#Eigenvalue-Problem" title="Permalink to this headline">¶</a></h3>
+<p>For a matrix <span class="math notranslate nohighlight">\(A \in S^n_+\)</span> (the set of positive semi-definite matrices), we consider</p>
+<p><span class="math">\begin{align}
+p^\ast = \max_X \langle A, X\rangle: \textrm{Tr}(X) = 1, ~ X \succeq 0. \nonumber
+\end{align}</span></p>
+<p>The associated Lagrangian, using the conic approach, is</p>
+<p><span class="math">\begin{align}
+\mathcal{L}(X, Y, \nu) = \langle A, X\rangle + \nu (1 - \textrm{Tr}(X)) + \langle Y, X\rangle \nonumber
+\end{align}</span></p>
+<p>with the matrix dual variable <span class="math notranslate nohighlight">\(Y \succeq 0\)</span>, and <span class="math notranslate nohighlight">\(\nu \in \mathbb{R}\)</span> is free. The dual problem is</p>
+<p><span class="math">\begin{align}
+d^\ast = \min_{\nu, Y} : Y + A = \lambda I, ~ Y \succeq 0. \nonumber
+\end{align}</span></p>
+<p>Both the primal and dual problems are strictly feasible, so <span class="math notranslate nohighlight">\(p^\ast = d^\ast\)</span>.</p>
+</div>
+<div class="section" id="Robust-Linear-Programming">
+<h3>Robust Linear Programming<a class="headerlink" href="#Robust-Linear-Programming" title="Permalink to this headline">¶</a></h3>
+<p><span class="math">\begin{align*}
+\min \ c^\intercal x: \text{Prob}(a_i^\intercal x \le b_i) \ge \eta, \ i=1,\ldots, n
+\end{align*}</span></p>
+<p>where coefficient vectors are IID <span class="math notranslate nohighlight">\(a_i \sim \mathcal{N}(\bar{a}_i, \Sigma_i)\)</span>. For fixed <span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(a^\intercal_i x\)</span> is <span class="math notranslate nohighlight">\(\mathcal{N}(\bar{a}^\intercal_i x, x^\intercal \Sigma_i x)\)</span>. We have</p>
+<p><span class="math">\begin{align*}
+\text{Prob}(\bar{a}^\intercal_i x + x^\intercal \Sigma_i x Z \le b) & \ge \eta \Leftrightarrow \text{Prob}\left(Z \le \frac{b - \bar{a}^\intercal_i x}{x^\intercal \Sigma_i x }\right) \ge \eta \\
+\Phi^{-1}(\eta) & \le \frac{b - \bar{a}^\intercal_i x}{x^\intercal \Sigma_i x } \Leftrightarrow \bar{a}^\intercal_i x + \Phi^{-1}(\eta) \lVert \Sigma_i^{1/2} x \rVert_2 \le b
+\end{align*}</span></p>
+<p>it is equivalent to</p>
+<p><span class="math">\begin{align*}
+\min \ & c^\intercal x \\
+\text{s.t. } & \bar{a}^\intercal_i x + \Phi^{-1}(\eta) \lVert \Sigma_i^{1/2} x \rVert_2 \le b, \ i=1,\ldots, n
+\end{align*}</span></p>
+<ul class="simple">
+<li><p>robust LP is an SOCP for <span class="math notranslate nohighlight">\(\eta \ge 0.5\)</span> because <span class="math notranslate nohighlight">\(\Phi^{-1}(\eta) \ge 0\)</span></p></li>
+<li><p>robust LP is a LP for <span class="math notranslate nohighlight">\(\eta = 0.5\)</span> because <span class="math notranslate nohighlight">\(\Phi^{-1}(\eta) = 0\)</span></p></li>
+</ul>
+</div>
+<div class="section" id="Distributionally-Robust-Optimization">
+<h3>Distributionally Robust Optimization<a class="headerlink" href="#Distributionally-Robust-Optimization" title="Permalink to this headline">¶</a></h3>
+<p><span class="math">\begin{align*}
+\max_{F} \ & E_{F}(h(x, \xi)) \\
+\text{s.t.} \ & \int_{\mathcal{S}} d F(\xi) = 1 \\
+& (\mathbb{E}(\xi) - \mu)^\intercal \Sigma^{-1} (\mathbb{E}(\xi) - \mu) \le \gamma_1 \\
+& \mathbb{E}((\xi-\mu)(\xi-\mu)^\intercal) \preceq \gamma_2 \Sigma
+\end{align*}</span></p>
+<p>is equivalent to an SDP</p>
+<p><span class="math">\begin{align*}
+\max_{F} \ & \int_{\mathcal{S}} h(x, \xi) d F(\xi) \\
+\text{s.t.} \ & \int_{\mathcal{S}} d F(\xi) = 1 \\
+& \int_{\mathcal{S}} \left[
+\begin{array}{cc}
+\Sigma & \xi-\mu \\
+\xi-\mu & \gamma_1
+\end{array}
+\right] d F(\xi) \succeq 0 \quad \text{(Schur complement)}\\
+& \int_{\mathcal{S}} (\xi-\mu)(\xi-\mu)^\intercal d F(\xi) \preceq \gamma_2 \Sigma
+\end{align*}</span></p>
+<p>We refer to (Delage and Ye 2010) for its dual formulation.</p>
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {}, "version_major": 2, "version_minor": 0}
+</script></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="decomposition.html" class="btn btn-neutral float-right" title="Decomposition Methods" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="keras.html" class="btn btn-neutral float-left" title="Advanced Deep-Learning by Keras" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Ming Zhao
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
