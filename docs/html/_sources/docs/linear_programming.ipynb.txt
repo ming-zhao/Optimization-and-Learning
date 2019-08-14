@@ -177,7 +177,688 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Linear"
+    "For $A \\in \\Re^{m \\times n}$, $b \\in \\Re^{m}$, $c \\in \\Re^{n}$ and $x \\in \\Re^{n}$\n",
+    "\n",
+    "\\begin{align*}\n",
+    "p^* = \\max_x \\ & c^\\intercal x \\\\\n",
+    "\\text{s.t. } & Ax = b \\\\\n",
+    "& x \\ge 0\n",
+    "\\end{align*}"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Lagrangian Relaxation"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "For any $y \\in \\Re^{m}$,\n",
+    "\n",
+    "\\begin{align*}\n",
+    "p^* & \\le \\max_{x \\ge 0} \\left( c^\\intercal x - y^\\intercal (Ax - b) \\right) \\equiv \\max_{x \\ge 0} \\mathcal{L}(x, y)\n",
+    "\\end{align*}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "\n",
+       "        <a href=\"#\" onclick=\"hide_comment(this); return false;\">show comment</a>\n",
+       "    "
+      ],
+      "text/plain": [
+       "<IPython.core.display.HTML object>"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "hide_comment()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let $x^*$ be the optimal solution for the primal problem. Then, for any $y \\in \\Re^m$,\n",
+    "\n",
+    "\\begin{align*}\n",
+    "p^* = \\left( c^\\intercal x^* - y^\\intercal (Ax^* - b) \\right)\n",
+    "\\end{align*}\n",
+    "\n",
+    "because $Ax^* = b$. Since $x^*$ is feasible to the Lagrangian Relaxation,\n",
+    "\n",
+    "\\begin{align*}\n",
+    "p^* & \\le \\max_{x \\ge 0} \\left( c^\\intercal x - y^\\intercal (Ax - b) \\right) \\equiv \\max_{x \\ge 0} \\mathcal{L}(x, y)\n",
+    "\\end{align*}"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Alternative formulation:\n",
+    "\\begin{align*}\n",
+    "p^* = \\max_x & \\quad c^\\intercal x \\\\\n",
+    "\\text{s.t.} & \\quad Ax \\le b \\\\\n",
+    "& \\quad x \\ge 0\n",
+    "\\end{align*}\n",
+    "\n",
+    "\n",
+    "For any $y \\in \\Re_+^{m}$, $y^\\intercal (Ax - b) \\le 0$\n",
+    "\\begin{align*}\n",
+    "p^* & \\le \\max_{x \\ge 0} \\left( c^\\intercal x - y^\\intercal (Ax - b) \\right) \\equiv \\max_{x \\ge 0} \\mathcal{L}(x, y)\n",
+    "\\end{align*}\n",
+    "\n",
+    "where $y^\\intercal (Ax - b)$ minimizes the violation of the constraint. We have\t\n",
+    "\\begin{align*}\n",
+    "p^* & \\le \\min_{y \\geq 0} \\max_{x \\ge 0} \\left( c^\\intercal x - y^\\intercal (Ax - b) \\right)\\\\\n",
+    "& = \\min_{y \\geq 0} \\max_{x \\ge 0} \\left( (c^\\intercal - y^\\intercal A) x + y^\\intercal b \\right) \\\\\n",
+    "& = \\min_{y \\geq 0} \n",
+    "\\begin{cases}\n",
+    "y^\\intercal b & c^\\intercal - y^\\intercal A \\le \\mathbf{0} \\text{ with } x^* = \\mathbf{0}\\\\\n",
+    "\\infty    & \\text{Otherwise}\n",
+    "\\end{cases}\n",
+    "\\end{align*}\n",
+    "\n",
+    "<span style=\"float:right\"> $\\blacksquare$ </span>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Thus, we have\n",
+    "\n",
+    "\\begin{align*}\n",
+    "p^* & \\le \\min_{y} \\max_{x \\ge 0} \\left( c^\\intercal x - y^\\intercal (Ax - b) \\right)\\\\\n",
+    "& = \\min_{y} \\max_{x \\ge 0} \\left( (c^\\intercal - y^\\intercal A) x + y^\\intercal b \\right) \\\\\n",
+    "& = \\min_{y} \n",
+    "\\begin{cases}\n",
+    "y^\\intercal b & c^\\intercal - y^\\intercal A \\le \\mathbf{0} \\text{ with } x^* = \\mathbf{0}\\\\\n",
+    "\\infty    & \\text{Otherwise}\n",
+    "\\end{cases}\n",
+    "\\end{align*}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "\n",
+       "        <a href=\"#\" onclick=\"hide_comment(this); return false;\">show comment</a>\n",
+       "    "
+      ],
+      "text/plain": [
+       "<IPython.core.display.HTML object>"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "hide_comment()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Note that $c^\\intercal - y^\\intercal A$ is a vector. Given $y$, if\n",
+    "\n",
+    "\\begin{align*}\n",
+    "\\text{$(c^\\intercal - y^\\intercal A)_i$ is positive}\n",
+    "\\end{align*}\n",
+    "\n",
+    "then, the inner maximization problem is unbounded by letting $x_i = \\infty$. If \n",
+    "\n",
+    "\\begin{align*}\n",
+    "\\left(c^\\intercal - y^{\\intercal} A\\right)_i < 0,\n",
+    "\\end{align*}\n",
+    "\n",
+    "then the optimal solution for the inner maximization problem has $x^*_i = 0$. If\n",
+    "\n",
+    "\\begin{align*}\n",
+    "\\left(c^\\intercal - y^{\\intercal} A\\right)_i = 0,\n",
+    "\\end{align*}\n",
+    "\n",
+    "then $x^*_i$ can take arbitrary value, i.e. complementarity condition.\n",
+    "\n",
+    "<span style=\"float:right\"> $\\blacksquare$ </span>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "\\begin{align*}\n",
+    "p^* & \\le \\min_{y} \\begin{cases}\n",
+    "y^\\intercal b  & c^\\intercal - y^\\intercal A \\le \\mathbf{0} \\\\\n",
+    "\\infty & \\text{Otherwise}\n",
+    "\\end{cases}\n",
+    "\\end{align*}\n",
+    "\n",
+    "We have weak duality\n",
+    "\n",
+    "\\begin{align*}\n",
+    "p^* \\le \\min \\ & y^\\intercal b \t\t\\\\\n",
+    "\\text{s.t. } & y^\\intercal A \\ge c^\\intercal\n",
+    "\\end{align*}"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Farkas' Lemma"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "For $A \\in \\Re^{m \\times n}$ and $b \\in \\Re^{m}$, there exactly one of the following two systems holds:\n",
+    "\n",
+    "\\begin{align*}\n",
+    "\\text{(I)} \\quad \\exists x  \\in \\Re^n &  &&&&& \\text{(II)} \\quad \\exists y  \\in \\Re^m &\\\\\n",
+    "\\text{s.t. } Ax &= b  &&&&& \\text{s.t. } A^\\intercal y & \\ge 0 \\\\\n",
+    "x &\\ge 0 &&&&& y^\\intercal b & < 0\n",
+    "\\end{align*}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "\n",
+       "        <a href=\"#\" onclick=\"hide_comment(this); return false;\">show comment</a>\n",
+       "    "
+      ],
+      "text/plain": [
+       "<IPython.core.display.HTML object>"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "hide_comment()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Proof of not both**\n",
+    "\n",
+    "Suppose $x$ satisfies $\\text{(I)}$ and $y$ satisfies $\\text{(II)}$. Then $0 > y^\\intercal b = y^\\intercal A x \\ge 0$, a contradiction. \n",
+    "\n",
+    "**Proof of at least one**\n",
+    "\n",
+    "Suppose $\\text{(I)}$ infeasible. We will show $\\text{(II)}$ feasible.\n",
+    "\n",
+    "1. Consider $S = \\{ A x : x \\ge 0 \\}$ so that $S$ is closed, convex and $b \\notin S$.\n",
+    "\n",
+    "</br>\n",
+    "\n",
+    "2. Let $y \\in \\Re^m$ and $\\alpha \\in \\Re$ define a hyperplane that separates $b$ from $S$: $y^\\intercal b < \\alpha$, but $y^\\intercal s \\ge \\alpha$ $\\forall s \\in S$.\n",
+    "\n",
+    "</br>\n",
+    "\n",
+    "3. $0 \\in S \\Rightarrow \\alpha \\le 0 \\Rightarrow y^\\intercal b < 0$.\n",
+    "\n",
+    "</br>\n",
+    "\n",
+    "4. $y^\\intercal A x \\ge \\alpha$ $\\forall x \\ge 0$ implies $y^\\intercal A \\ge 0$ since $x$ can be arbitrarily large.\n",
+    "\n",
+    "<span style=\"float:right\"> $\\blacksquare$ </span>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Alternative**\n",
+    "\n",
+    "For $A \\in \\Re^{m \\times n}$ and $b \\in \\Re^{m}$, there exactly one of the following two systems holds:\n",
+    "\n",
+    "\\begin{align*}\n",
+    "\\text{(I)} \\quad \\exists x  \\in \\Re^n & &&&&& \\text{(II)} \\quad \\exists y  \\in \\Re^m & \\\\\n",
+    "\\text{s.t. } Ax & \\le b &&&&& \\text{s.t. } A^\\intercal y & \\ge 0\\\\\n",
+    "x &\\ge 0 &&&&& y^\\intercal b & < 0 \\\\\n",
+    "&&&&&& y & \\ge 0\n",
+    "\\end{align*}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "\n",
+       "        <a href=\"#\" onclick=\"hide_comment(this); return false;\">show comment</a>\n",
+       "    "
+      ],
+      "text/plain": [
+       "<IPython.core.display.HTML object>"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "hide_comment()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Proof of alternative**\n",
+    "\n",
+    "Apply Farkas' lemma to\n",
+    "\n",
+    "\\begin{align*}\n",
+    "\\text{(I)} \\quad \\exists x  \\in \\Re^n & &&&&& \\text{(II)} \\quad \\exists y  \\in \\Re^m & \\\\\n",
+    "\\text{s.t. } Ax + \\texttt{I} s & \\le b &&&&& \\text{s.t. } A^\\intercal y & \\ge 0 \\\\\n",
+    "x,\\ s &\\ge 0 &&&&& \\texttt{I} y &\\ge 0 \\\\\n",
+    "&&&&&& y^\\intercal b & < 0 \n",
+    "\\end{align*}\n",
+    "\n",
+    "<span style=\"float:right\"> $\\blacksquare$ </span>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Strong Duality"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We have $p^* = d^*$ if both primal and dual problems are feasible where\n",
+    "\n",
+    "\\begin{align*}\n",
+    "p^* = \\max_x \\ &  c^\\intercal x &&&&& d^* = \\min \\ & y^\\intercal b  \\\\\n",
+    "\\text{s.t. } &  Ax = b &&&&& \\text{s.t. } & y^\\intercal A \\ge c^\\intercal \\\\\n",
+    "& x \\ge 0\n",
+    "\\end{align*}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "\n",
+       "        <a href=\"#\" onclick=\"hide_comment(this); return false;\">show comment</a>\n",
+       "    "
+      ],
+      "text/plain": [
+       "<IPython.core.display.HTML object>"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "hide_comment()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "$p^* \\le d^*$ follows the weak duality.\n",
+    "\n",
+    "**Proof of** $p^* \\ge d^*$\n",
+    "\n",
+    "Suppose $p^* < \\alpha$. We show $d^* < \\alpha$.\n",
+    "\n",
+    "\\begin{align*}\n",
+    "\\text{(I)} \\quad \\exists x  \\in \\Re^n & &&&&& \\text{(II)} \\quad \\exists y \\in \\Re^m,\\ & z \\in \\Re\\\\\n",
+    "\\text{s.t. } Ax & = b &&&&& \\text{s.t. } y^\\intercal A - z c^\\intercal & \\ge 0\\\\\n",
+    "-c^\\intercal x + s & = - \\alpha &&&&& y^\\intercal b -z \\alpha & < 0\\\\\n",
+    "s, x & \\ge 0 &&&&& z & \\ge 0 \n",
+    "\\end{align*}\n",
+    "\n",
+    "where $s, z \\in \\Re$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The matrix form of $\\text{(I)}$ and $\\text{(II)}$:\n",
+    "\\begin{align*}\n",
+    "\\left(\n",
+    "\\begin{array}{ll}\n",
+    "A & \\mathbf{0} \\\\\n",
+    "-c^\\intercal & 1\n",
+    "\\end{array}\n",
+    "\\right)_{(m+1) \\times (n+1)}\n",
+    "\\left(\n",
+    "\\begin{array}{l}\n",
+    "x \\\\\n",
+    "s\n",
+    "\\end{array}\n",
+    "\\right) &= \\left(\n",
+    "\\begin{array}{l}\n",
+    "b \\\\\n",
+    "-\\alpha\n",
+    "\\end{array}\n",
+    "\\right) \\\\\n",
+    "\\left( y^\\intercal, z \\right)\\left(\n",
+    "\\begin{array}{ll}\n",
+    "A & \\mathbf{0} \\\\\n",
+    "-c^\\intercal & 1\n",
+    "\\end{array}\n",
+    "\\right) & \\ge 0 \\\\\n",
+    "\\left( y^\\intercal, z \\right)\\left(\n",
+    "\\begin{array}{l}\n",
+    "b \\\\\n",
+    "-\\alpha\n",
+    "\\end{array}\n",
+    "\\right) & < 0\t\n",
+    "\\end{align*}"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Proof of** $p^* \\ge d^*$\n",
+    "\n",
+    "Definition of $\\alpha$ $\\Rightarrow$ $\\text{(I)}$ is infeasible $\\Rightarrow$ $\\text{(II)}$ is feasible by Farkas’ Lemma. Let $y, z$ be a solution to \\text{(II)}. If $z \\le 0$\n",
+    "\n",
+    "- then $\\{y \\in \\Re^m: A^\\intercal y \\ge 0, y^\\intercal b < 0\\}$ is feasible.\n",
+    "\n",
+    "</br>\n",
+    "\n",
+    "- Farkas’ Lemma (alternative) $\\Rightarrow \\{x \\in \\Re^n: Ax = b, x \\ge 0\\}$ is infeasible.\n",
+    "\n",
+    "</br>\n",
+    "\n",
+    "- contradiction since primal problem is assumed to be feasible.\n",
+    "\n",
+    "\n",
+    "Then $z > 0$.\n",
+    "\n",
+    "- We scale $y,\\ z$ so that $y$ satisfies $\\text{(II)}$ and $z = 1$.\n",
+    "\n",
+    "</br>\n",
+    "\n",
+    "- Thus $y$ is feasible to the dual problem and $y^\\intercal b < \\alpha$.\n",
+    "\n",
+    "<span style=\"float:right\"> $\\blacksquare$ </span>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Algorithms"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "\\begin{align*}\n",
+    "p^* = \\max_x \\ &  c^\\intercal x &&&&& d^* = \\min \\ & y^\\intercal b  \\\\\n",
+    "\\text{s.t. } &  Ax = b &&&&& \\text{s.t. } & y^\\intercal A \\ge c^\\intercal \\\\\n",
+    "& x \\ge 0\n",
+    "\\end{align*}\n",
+    "\n",
+    "Consider basis and non-basis decomposition\n",
+    "\\begin{align*}\n",
+    "A x &= (A_B, A_N) \n",
+    "\\left(\n",
+    "\\begin{array}{c}\n",
+    "x_B \\\\\n",
+    "x_N\n",
+    "\\end{array}\n",
+    "\\right) = A_B x_B + A_N x_N = A_B ( x_B + A^{-1}_B A_N x_N ) = b \\\\\n",
+    "\\Rightarrow x_B &= A^{-1}_B b - A^{-1}_B A_N x_N \\\\\n",
+    "c^\\intercal x   &= (c_B, c_N)^\\intercal \\left(\n",
+    "\\begin{array}{c}\n",
+    "x_B \\\\\n",
+    "x_N\n",
+    "\\end{array}\n",
+    "\\right) = c^\\intercal_B x_B + c^\\intercal_N x_N = c^\\intercal_B ( A^{-1}_B b - A^{-1}_B A_N x_N ) + c^\\intercal_N x_N \\\\\n",
+    "y^\\intercal A &= y^\\intercal (A_B, A_N) \\ge (c_B, c_N)^\\intercal \\Rightarrow y^\\intercal A_B \\ge c_B^\\intercal \\text{ and } y^\\intercal A_N \\ge c_N^\\intercal\n",
+    "\\end{align*} "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "\\begin{align*}\n",
+    "p^* = c^\\intercal_B A^{-1}_B b + \\max \\ & (c^\\intercal_{N} - c^\\intercal_B A^{-1}_B A_{N}) x_N \t&&&&& d^* = \\min \\ & y^\\intercal b \\\\\n",
+    "\\text{s.t. } & x_B + A^{-1}_B A_N x_N = A^{-1}_B b &&&&& \\text{s.t. } & y^\\intercal A_B \\ge c^\\intercal\\\\\n",
+    "& x_B, x_N \\ge 0 &&&&& & y^\\intercal A_N \\ge c^\\intercal\n",
+    "\\end{align*}\n",
+    "\n",
+    "\n",
+    "Potentially, we have\n",
+    "\n",
+    "- primal solution $(x_B, x_N) = (A^{-1}_B b, 0)$ and\n",
+    "\n",
+    "</br>\n",
+    "\n",
+    "- dual solution $y^\\intercal = c^\\intercal_B A^{-1}_B$\n",
+    "\n",
+    "The basis $A_B$ is\n",
+    "\n",
+    "- primal feasible if $A^{-1}_B b \\ge 0$ and\n",
+    "\n",
+    "</br>\n",
+    "\n",
+    "- dual feasible if $c_B A^{-1}_B A_{N} \\ge c_{N}$.\n",
+    "\n",
+    "If $A_B$ is both primal and dual feasible, the primal and dual objective values are $c^\\intercal_B A^{-1}_B b$. Thus we get an optimal solution."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "\n",
+       "        <a href=\"#\" onclick=\"hide_comment(this); return false;\">show comment</a>\n",
+       "    "
+      ],
+      "text/plain": [
+       "<IPython.core.display.HTML object>"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "hide_comment()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "LP basis formulation\n",
+    "\n",
+    "\\begin{align*}\n",
+    "p^* = c^T_B A^{-1}_B b + \\max & \\quad \\underbrace{(c_{N} - c_B A^{-1}_B A_{N})}_{\\bar{c}} x_N \\\\\n",
+    "\\text{s.t.} & \\quad x_B + \\underbrace{A^{-1}_B A_N}_{\\bar{a}} x_N = A^{-1}_B b { = \\bar{b}} \\\\\n",
+    "& \\quad x_B, x_N \\ge 0\n",
+    "\\end{align*}\n",
+    "\n",
+    "**Primal and dual simplex algorithm (Phase 2)**\n",
+    "\n",
+    "|Algorithm: | | primal simplex | | dual simplex |\n",
+    "|---------| -- | ---------|--|---------|\n",
+    "|Initial: | | A primal feasible basis $A_B$ | | A dual feasible basis $A_B$|\n",
+    "|Optimality: | | if $A_B$ is dual feasible | | if $A_B$ is primal feasible |\n",
+    "|Pricing: | | select $r \\in N$ with $\\bar{c}_r > 0$ | | select $s \\in B$ with $\\bar{b}_s < 0$ |\n",
+    "| | | unbounded if $\\bar{a}_r \\le 0$ |  | infeasible if $\\bar{a}_{sj} \\geq 0$ $\\forall j \\in N$ |\n",
+    "\n",
+    "<span style=\"float:right\"> $\\blacksquare$ </span>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "A solution $(x,y,s) \\in \\Re^n \\times \\Re^m \\times \\Re^m$ is optimal if it satisfies $Ax = b,\\ y^\\intercal A - s^\\intercal = c^\\intercal$ and\n",
+    "\n",
+    "\\begin{eqnarray}\n",
+    "s^Tx = 0 \\label{eqn:lp_1}\\\\\n",
+    "x \\ge 0  \\label{eqn:lp_2}\\\\\n",
+    "s \\ge 0  \\label{eqn:lp_3}\n",
+    "\\end{eqnarray}\n",
+    "\n",
+    "Solutions along the search path of all algorithms satisfy all (in)equalities, except\n",
+    "\n",
+    "- primal simplex: \\eqref{eqn:lp_3} is relaxed initially and optimum is found until it is satisfied.\n",
+    "\n",
+    "</br>\n",
+    "\n",
+    "- dual simplex: \\eqref{eqn:lp_2} is relaxed initially and optimum is found until it is satisfied.\n",
+    "\n",
+    "</br>\n",
+    "\n",
+    "- primal-dual: \\eqref{eqn:lp_1} is relaxed initially and optimum is found until it is satisfied.\n",
+    "\n",
+    "Suppose we have a subroutine which can find a solution of a set of linear equations. Design an algorithm to solve the optimization problem $\\max \\{c^\\intercal x : Ax = b, x \\in \\mathcal{R}^n\\}$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "\n",
+       "        <a href=\"#\" onclick=\"hide_comment(this); return false;\">show comment</a>\n",
+       "    "
+      ],
+      "text/plain": [
+       "<IPython.core.display.HTML object>"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "hide_comment()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can solve the system of linear equations\n",
+    "\n",
+    "\\begin{align*}\n",
+    "c^\\intercal x &= b y^\\intercal \\\\\n",
+    "Ax &= b \\\\\n",
+    "y^\\intercal A - s^\\intercal &= c^\\intercal \\\\\n",
+    "x \\ge 0, s &\\ge 0\n",
+    "\\end{align*}"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Interior point method\n",
+    "\n",
+    "\\begin{eqnarray*}\n",
+    "A^T y - s & = & c \\\\\n",
+    "A x & = & b \\\\\n",
+    "x_i s_i & = & 0, i=1,\\ldots, n\\\\\n",
+    "(x,s) & > & 0\n",
+    "\\end{eqnarray*}\n",
+    "\n",
+    "\\begin{align*}\n",
+    "F(x,y,s) = \\left[ \\begin{array}{c}\n",
+    "A^T y - s - c \\\\\n",
+    "Ax - b \\\\\n",
+    "XSe\n",
+    "\\end{array} \\right] = 0, (x,s) > 0\n",
+    "\\end{align*}\n",
+    "\n",
+    "Newton's method implies\n",
+    "\n",
+    "\\begin{align*}\n",
+    "J(x,y,s) \\left[\\begin{array}{c}\n",
+    "\\Delta x \\\\\n",
+    "\\Delta y \\\\\n",
+    "\\Delta s\n",
+    "\\end{array} \\right] = \\left[\\begin{array}{ccc}\n",
+    "0 & A^T & -I \\\\\n",
+    "A & 0 & 0 \\\\\n",
+    "S & 0 & X\n",
+    "\\end{array} \\right] \\left[\\begin{array}{c}\n",
+    "\\Delta x \\\\\n",
+    "\\Delta y \\\\\n",
+    "\\Delta s\n",
+    "\\end{array} \\right]= -F(x,y,s) = \\left[ \\begin{array}{c}\n",
+    "0 \\\\ 0 \\\\ -XSe \n",
+    "\\end{array} \\right]\n",
+    "\\end{align*}\n",
+    "\n",
+    "<span style=\"float:right\"> $\\blacksquare$ </span>"
    ]
   }
  ],
@@ -210,7 +891,14 @@
    "toc_cell": false,
    "toc_position": {},
    "toc_section_display": true,
-   "toc_window_display": false
+   "toc_window_display": true
+  },
+  "widgets": {
+   "application/vnd.jupyter.widget-state+json": {
+    "state": {},
+    "version_major": 2,
+    "version_minor": 0
+   }
   }
  },
  "nbformat": 4,

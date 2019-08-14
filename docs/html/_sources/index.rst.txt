@@ -16,9 +16,9 @@
    docs/neural_networks.ipynb
    docs/convnet.ipynb
    docs/text_mining.ipynb
-   docs/keras.ipynb
    docs/conic_programming.ipynb
    docs/decomposition.ipynb
+   docs/adv_deep_learning.ipynb
 
 Indices and tables
 ==================
