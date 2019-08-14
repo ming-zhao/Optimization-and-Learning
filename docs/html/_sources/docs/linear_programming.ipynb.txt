@@ -609,7 +609,7 @@
    "source": [
     "**Proof of** $p^* \\ge d^*$\n",
     "\n",
-    "Definition of $\\alpha$ $\\Rightarrow$ $\\text{(I)}$ is infeasible $\\Rightarrow$ $\\text{(II)}$ is feasible by Farkas’ Lemma. Let $y, z$ be a solution to \\text{(II)}. If $z \\le 0$\n",
+    "Definition of $\\alpha$ $\\Rightarrow$ $\\text{(I)}$ is infeasible $\\Rightarrow$ $\\text{(II)}$ is feasible by Farkas’ Lemma. Let $y, z$ be a solution to $\\text{(II)}$. If $z \\le 0$\n",
     "\n",
     "- then $\\{y \\in \\Re^m: A^\\intercal y \\ge 0, y^\\intercal b < 0\\}$ is feasible.\n",
     "\n",
