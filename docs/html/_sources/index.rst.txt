@@ -15,6 +15,8 @@
    docs/linear_programming.ipynb
    docs/neural_networks.ipynb
    docs/convnet.ipynb
+   docs/kernel_methods.ipynb
+   docs/sequential_data_models.ipynb
    docs/text_mining.ipynb
    docs/conic_programming.ipynb
    docs/decomposition.ipynb
