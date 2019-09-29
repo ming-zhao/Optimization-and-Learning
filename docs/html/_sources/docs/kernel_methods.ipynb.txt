@@ -156,6 +156,13 @@
    ]
   },
   {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Kernel Methods"
+   ]
+  },
+  {
    "cell_type": "code",
    "execution_count": 5,
    "metadata": {},
@@ -257,7 +264,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Gaussian Process for Regression"
+    "## Gaussian Process for Regression"
    ]
   },
   {
@@ -563,7 +570,14 @@
    "toc_cell": false,
    "toc_position": {},
    "toc_section_display": true,
-   "toc_window_display": false
+   "toc_window_display": true
+  },
+  "widgets": {
+   "application/vnd.jupyter.widget-state+json": {
+    "state": {},
+    "version_major": 2,
+    "version_minor": 0
+   }
   }
  },
  "nbformat": 4,

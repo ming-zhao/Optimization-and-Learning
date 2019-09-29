@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Gaussian Process for Regression &mdash; Optimization and Learning 1.0 documentation</title>
+  <title>Kernel Methods &mdash; Optimization and Learning 1.0 documentation</title>
   
 
   
@@ -38,7 +38,9 @@
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sequential Data Models" href="sequential_data_models.html" />
+    <link rel="prev" title="Convolutional Neural Networks" href="convnet.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -83,13 +85,18 @@
             
             
               <p class="caption"><span class="caption-text">Optimization and Learning</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="linear_regression.html">Linear Models for Regression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="linear_classification.html">Linear Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="linear_programming.html">Linear Programming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="neural_networks.html">Neural Networks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="convnet.html">Convolutional Neural Networks</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Kernel Methods</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Gaussian-Process-for-Regression">Gaussian Process for Regression</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sequential_data_models.html">Sequential Data Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="text_mining.html">Text Mining</a></li>
 <li class="toctree-l1"><a class="reference internal" href="conic_programming.html">Conic Programming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="decomposition.html">Decomposition Methods</a></li>
@@ -139,7 +146,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Gaussian Process for Regression</li>
+      <li>Kernel Methods</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -531,6 +538,8 @@ div.rendered_html tbody tr:hover {
   });
 </script></div>
 </div>
+<div class="section" id="Kernel-Methods">
+<h1>Kernel Methods<a class="headerlink" href="#Kernel-Methods" title="Permalink to this headline">¶</a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -608,18 +617,18 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/docs_kernel_methods_2_0.png" src="../_images/docs_kernel_methods_2_0.png" />
+<img alt="../_images/docs_kernel_methods_3_0.png" src="../_images/docs_kernel_methods_3_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/docs_kernel_methods_2_1.png" src="../_images/docs_kernel_methods_2_1.png" />
+<img alt="../_images/docs_kernel_methods_3_1.png" src="../_images/docs_kernel_methods_3_1.png" />
 </div>
 </div>
 <div class="section" id="Gaussian-Process-for-Regression">
-<h1>Gaussian Process for Regression<a class="headerlink" href="#Gaussian-Process-for-Regression" title="Permalink to this headline">¶</a></h1>
+<h2>Gaussian Process for Regression<a class="headerlink" href="#Gaussian-Process-for-Regression" title="Permalink to this headline">¶</a></h2>
 <p><span class="math">\begin{align*}
 C_n = \frac{1}{\alpha} \Phi \Phi^\intercal + \frac{1}{\beta} \textrm{I}_n
 \end{align*}</span></p>
@@ -661,7 +670,7 @@ C_n = \frac{1}{\alpha} \Phi \Phi^\intercal + \frac{1}{\beta} \textrm{I}_n
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/docs_kernel_methods_5_0.png" src="../_images/docs_kernel_methods_5_0.png" />
+<img alt="../_images/docs_kernel_methods_6_0.png" src="../_images/docs_kernel_methods_6_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -696,7 +705,7 @@ C_n = \frac{1}{\alpha} \Phi \Phi^\intercal + \frac{1}{\beta} \textrm{I}_n
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/docs_kernel_methods_6_0.png" src="../_images/docs_kernel_methods_6_0.png" />
+<img alt="../_images/docs_kernel_methods_7_0.png" src="../_images/docs_kernel_methods_7_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -725,7 +734,7 @@ C_n = \frac{1}{\alpha} \Phi \Phi^\intercal + \frac{1}{\beta} \textrm{I}_n
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/docs_kernel_methods_7_0.png" src="../_images/docs_kernel_methods_7_0.png" />
+<img alt="../_images/docs_kernel_methods_8_0.png" src="../_images/docs_kernel_methods_8_0.png" />
 </div>
 </div>
 <p>A simple one-dimensional regression example computed in two different ways:</p>
@@ -834,16 +843,19 @@ C_n = \frac{1}{\alpha} \Phi \Phi^\intercal + \frac{1}{\beta} \textrm{I}_n
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/docs_kernel_methods_9_0.png" src="../_images/docs_kernel_methods_9_0.png" />
+<img alt="../_images/docs_kernel_methods_10_0.png" src="../_images/docs_kernel_methods_10_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/docs_kernel_methods_9_1.png" src="../_images/docs_kernel_methods_9_1.png" />
+<img alt="../_images/docs_kernel_methods_10_1.png" src="../_images/docs_kernel_methods_10_1.png" />
 </div>
 </div>
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {}, "version_major": 2, "version_minor": 0}
+</script></div>
 </div>
 
 
@@ -851,6 +863,15 @@ C_n = \frac{1}{\alpha} \Phi \Phi^\intercal + \frac{1}{\beta} \textrm{I}_n
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sequential_data_models.html" class="btn btn-neutral float-right" title="Sequential Data Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="convnet.html" class="btn btn-neutral float-left" title="Convolutional Neural Networks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
