@@ -2,10 +2,169 @@
  "cells": [
   {
    "cell_type": "code",
-   "execution_count": 1,
-   "metadata": {},
-   "outputs": [],
+   "execution_count": 5,
+   "metadata": {
+    "scrolled": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<script>\n",
+       "  var password,\n",
+       "      teacher_mode,\n",
+       "      isHtml;\n",
+       "      \n",
+       "  var class_output,\n",
+       "      class_input,\n",
+       "      class_answer;\n",
+       "      \n",
+       "  function code_toggle(e) {\n",
+       "    var orig_e = e;\n",
+       "    while (!e.closest(class_output).previousElementSibling.classList.contains(class_input)) {\n",
+       "      e = e.closest(class_output).previousElementSibling;\n",
+       "    }\n",
+       "    var target = e.closest(class_output).previousElementSibling;\n",
+       "    if (target.getAttribute(\"style\") == \"\" || target.getAttribute(\"style\") == null) {\n",
+       "      target.style.display = \"none\";\n",
+       "      orig_e.innerHTML = 'show code';\n",
+       "    }\n",
+       "    else {\n",
+       "      target.style.removeProperty(\"display\");\n",
+       "      orig_e.innerHTML = 'hide code';\n",
+       "    }\n",
+       "  }\n",
+       "  \n",
+       "  function hide_comment(e) {\n",
+       "    teacher_mode = 1;\n",
+       "    var target = e.closest(class_answer).nextElementSibling;\n",
+       "    //e.closest(class_output).previousElementSibling.style.display = \"none\";\n",
+       "    if (target.getAttribute(\"style\") == \"\" || target.getAttribute(\"style\") == null) {\n",
+       "      //target.style.display = \"none\";\n",
+       "      e.innerHTML = 'show comment';\n",
+       "      answer_block = target;\n",
+       "      //if (isHtml) {\n",
+       "          while (answer_block.innerHTML.indexOf(\"blacksquare<\") == -1) {\n",
+       "              answer_block.style.display = \"none\";\n",
+       "              answer_block = answer_block.nextElementSibling;\n",
+       "          }\n",
+       "      //}\n",
+       "      answer_block.style.display = \"none\";\n",
+       "    }\n",
+       "    else if (teacher_mode) {\n",
+       "        e.innerHTML = 'hide comment';\n",
+       "        //target.style.removeProperty(\"display\");\n",
+       "        answer_block = target;\n",
+       "        //if (isHtml) {\n",
+       "          while (answer_block.innerHTML.indexOf(\"blacksquare<\") == -1) {\n",
+       "              answer_block.style.removeProperty(\"display\");\n",
+       "              answer_block = answer_block.nextElementSibling;\n",
+       "          }\n",
+       "        //}\n",
+       "        answer_block.style.removeProperty(\"display\");\n",
+       "    }\n",
+       "  }\n",
+       "  \n",
+       "  function done() { \n",
+       "    document.getElementById(\"popup\").style.display = \"none\";\n",
+       "    var input = document.getElementById(\"password\").value;\n",
+       "    if (input==password) { teacher_mode=1; alert(\"Unlocked!\");}\n",
+       "    else { teacher_mode=0; alert(\"Wrong password!\");}       \n",
+       "  };\n",
+       "\n",
+       "  function unlock() {\n",
+       "    document.getElementById(\"popup\").style.display = \"block\";\n",
+       "  }\n",
+       "  \n",
+       "  $(document).ready(function() {\n",
+       "    $.ajax({\n",
+       "      type: \"GET\",  \n",
+       "      url: \"https://raw.githubusercontent.com/ming-zhao/ming-zhao.github.io/master/data/course.csv\",\n",
+       "      dataType: \"text\",       \n",
+       "      success: function(data)  \n",
+       "      {\n",
+       "        //var items = data.split(',');\n",
+       "        //var url = window.location.pathname;\n",
+       "        //var filename = url.substring(url.lastIndexOf('/')+1);\n",
+       "        password='a';\n",
+       "        //for (var i = 0, len = items.length; i < len; ++i) {\n",
+       "        //    if (filename.includes(items[i].trim()) && i%2==0 && i<items.length) {\n",
+       "        //        password=items[i+1].trim();\n",
+       "        //        break;\n",
+       "        //    }\n",
+       "        //}\n",
+       "        var code_blocks = document.getElementsByClassName('nbinput docutils container');\n",
+       "        if (code_blocks[0]==null) { \n",
+       "            isHtml=0;\n",
+       "            code_blocks = document.getElementsByClassName('input');\n",
+       "            class_output=\".output_wrapper\";\n",
+       "            class_input=\"input\";\n",
+       "            class_answer='.cell';\n",
+       "        }\n",
+       "        else { \n",
+       "            isHtml=1;\n",
+       "            class_output=\".nboutput\";\n",
+       "            class_input=\"nbinput\";\n",
+       "            class_answer=\".nboutput\";\n",
+       "        }\n",
+       "        \n",
+       "        for (var i = 0, len = code_blocks.length; i < len; ++i) {\n",
+       "          if (\n",
+       "              code_blocks[i].innerHTML.indexOf(\"toggle\") !== -1 \n",
+       "              || code_blocks[i].innerHTML.indexOf(\"button onclick\") !== -1\n",
+       "             ) {\n",
+       "            code_blocks[i].style.display = \"none\";\n",
+       "          }\n",
+       "        }\n",
+       "        for (var i = 0, len = code_blocks.length; i < len; ++i) {\n",
+       "          if (code_blocks[i].innerHTML.indexOf(\"hide_comment\") !== -1) {\n",
+       "            code_blocks[i].style.display = \"none\";\n",
+       "            if (isHtml) {\n",
+       "              answer_block = code_blocks[i].nextElementSibling.nextElementSibling;\n",
+       "              while (answer_block.innerHTML.indexOf(\"blacksquare\") == -1) {\n",
+       "                  answer_block.style.display = \"none\";\n",
+       "                  answer_block = answer_block.nextElementSibling;\n",
+       "              }\n",
+       "              answer_block.style.display = \"none\";\n",
+       "            }\n",
+       "            else{\n",
+       "              //code_blocks[i].closest(class_answer).nextElementSibling.style.display = \"none\";\n",
+       "              answer_block = code_blocks[i].closest(class_answer).nextElementSibling;\n",
+       "              while (answer_block.innerHTML.indexOf(\"blacksquare\") == -1) {\n",
+       "                  answer_block.style.display = \"none\";\n",
+       "                  answer_block = answer_block.nextElementSibling;\n",
+       "              }\n",
+       "              answer_block.style.display = \"none\";              \n",
+       "            }            \n",
+       "          }\n",
+       "        }\n",
+       "      }\n",
+       "    });\n",
+       "  });\n",
+       "</script>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/html": [
+       "\n",
+       "        <a href=\"#\" onclick=\"code_toggle(this); return false;\">show code</a>\n",
+       "    "
+      ],
+      "text/plain": [
+       "<IPython.core.display.HTML object>"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
    "source": [
+    "%run ../initscript.py\n",
     "import pandas as pd\n",
     "import numpy as np\n",
     "import matplotlib.pyplot as plt\n",
@@ -21,7 +180,9 @@
     "from Classifier import LeastSquares, Logistic\n",
     "\n",
     "from sklearn.linear_model import LinearRegression, LogisticRegression, BayesianRidge\n",
-    "from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticDiscriminantAnalysis"
+    "from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticDiscriminantAnalysis\n",
+    "\n",
+    "toggle()"
    ]
   },
   {
@@ -35,7 +196,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## Training Datasets"
+    "We introduce 3 training datasets that will be used in this notes."
    ]
   },
   {
@@ -1056,7 +1217,7 @@
     "\n",
     "In practice, often a LDA follows a PCA for dimensionality reduction (PCA can be performed before LDA to regularize the problem and avoid over-fitting).\n",
     "\n",
-    "<img src=\"https://github.com/ming-zhao/Optimization-and-Learning/raw/master/figures/lda_pca.png\" width=\"600\">\n",
+    "![lad_pca](https://github.com/ming-zhao/Optimization-and-Learning/raw/master/figures/lda_pca.png)\n",
     "\n",
     "There is a more convenient way to achieve the same via the LDA classifier (or PCA) implemented in the `scikit-learn`."
    ]
@@ -1186,6 +1347,107 @@
    "metadata": {},
    "source": [
     "The two plots above nicely confirm what we have discussed before: Where the PCA accounts for the most variance in the whole dataset, the LDA gives us the axes that account for the most variance between the individual classes."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Generative Models"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We model \n",
+    "\n",
+    "- the class-conditional density $p(\\mathbf{x}|\\mathcal{C}_k)$, and\n",
+    "\n",
+    "- the class prior $p(\\mathcal{C}_k)$\n",
+    "\n",
+    "- then use these to compute posterior probability $p(\\mathcal{C}_k|\\mathbf{x})$ through Bayes' theorem.\n",
+    "\n",
+    "The indirect (comparing to model $p(\\mathcal{C}_k|\\mathbf{x})$ directly) is an example of generative modeling, because we can generate synthetic data by drawing values of $\\mathbf{x}$ from $p(\\mathbf{x})$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Consider $K=2$, we have\n",
+    "\\begin{align}\n",
+    "p(\\mathcal{C}_1 | \\mathbf{x}) = \\frac{p(\\mathbf{x}|\\mathcal{C}_1)p(\\mathcal{C}_1)}{p(\\mathbf{x}|\\mathcal{C}_1)p(\\mathcal{C}_1) + p(\\mathbf{x}|\\mathcal{C}_2)p(\\mathcal{C}_2)} = \\frac{1}{1+\\exp(-a)} = \\sigma(a)  \\nonumber\n",
+    "\\end{align}\n",
+    "\n",
+    "with\n",
+    "\\begin{align}\n",
+    "a = \\ln \\frac{p(\\mathbf{x}|\\mathcal{C}_1)p(\\mathcal{C}_1)}{p(\\mathbf{x}|\\mathcal{C}_2)p(\\mathcal{C}_2)} \\triangleq \\mathbf{w}^\\intercal \\mathbf{x} \\label{eqn_act}\n",
+    "\\end{align}\n",
+    "\n",
+    "where $\\sigma(\\cdot)$ is the logistic sigmoid function."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "With assumption\n",
+    "\n",
+    "\\begin{align}\n",
+    "p(\\mathbf{x}|\\mathcal{C}_k) = \\frac{1}{(2\\pi)^{D/2}} \\frac{1}{\\lvert \\Sigma \\rvert ^{1/2}} \\exp \\left( -\\frac{1}{2} (\\mathbf{x} - \\mathbf{\\mu}_k)^\\intercal \\Sigma^{-1} (\\mathbf{x} - \\mathbf{\\mu}_k) \\right) \\nonumber\n",
+    "\\end{align}\n",
+    "\n",
+    "We have\n",
+    "\n",
+    "\\begin{align}\n",
+    "p(\\mathbf{x}_i, \\mathcal{C}_1) &= p(\\mathcal{C}_1)p(\\mathbf{x}_i|\\mathcal{C}_1) = \\pi \\mathcal{N}(\\mathbf{x}_i|\\mathbf{\\mu}_1, \\Sigma) \\nonumber \\\\\n",
+    "p(\\mathbf{x}_i, \\mathcal{C}_2) &= p(\\mathcal{C}_2)p(\\mathbf{x}_i|\\mathcal{C}_2) = (1-\\pi) \\mathcal{N}(\\mathbf{x}_i|\\mathbf{\\mu}_2, \\Sigma) \\nonumber\n",
+    "\\end{align}\n",
+    "\n",
+    "We can find $\\pi$, $\\mathbf{\\mu}_1$, $\\mathbf{\\mu}_2$ and $\\Sigma$ by maximizing likelihood function\n",
+    "\n",
+    "\\begin{align}\n",
+    "p(\\mathbf{t}|\\pi,\\mathbf{\\mu}_1,\\mathbf{\\mu}_2,\\Sigma) = \\prod_{i=1}^{n} \\left( \\pi \\mathcal{N}(\\mathbf{x}_i|\\mathbf{\\mu}_1, \\Sigma)\\right)^{t_i} \\left( (1-\\pi) \\mathcal{N}(\\mathbf{x}_i|\\mathbf{\\mu}_2, \\Sigma)\\right)^{1-t_i} \\nonumber\n",
+    "\\end{align}\n",
+    "\n",
+    "However, the maximum likelihood estimation of a Gaussian is not robust to outliers."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "For general $K > 2$,\n",
+    "\n",
+    "\\begin{align*}\n",
+    "p(\\mathcal{C}_k | \\mathbf{x}) &= \\frac{p(\\mathbf{x}|\\mathcal{C}_k)p(\\mathcal{C}_k)}{\\sum_{j}p(\\mathbf{x}|\\mathcal{C}_j)p(\\mathcal{C}_j)} \\\\\n",
+    "&= \\frac{\\exp(a_k)}{\\sum_{j}\\exp(a_j)} = \\text{softmax}_k (a)\n",
+    "\\end{align*}\n",
+    "\n",
+    "where the activate function\n",
+    "\n",
+    "\\begin{align*}\n",
+    "a_k = \\ln p(\\mathbf{x}|\\mathcal{C}_k)p(\\mathcal{C}_k)\n",
+    "\\end{align*}\n",
+    "\n",
+    "and softmax function represents a smoothed version of the `max' function. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "When we have discrete features, e.g., $x_j \\in \\{0,1\\}$. The class-conditional densities $p(\\mathbf{x}|\\mathcal{C}_k)$ cannot be Gaussian in the case of discrete feature values $x_i$.\n",
+    "\n",
+    "- We make naive Bayes assumption: feature values are independent\n",
+    "\n",
+    "\\begin{align*}\n",
+    "p(\\mathbf{x}|\\mathcal{C}_k) &= \\prod_{j=1}^{p} \\mu_{kj}^{x_j}(1-\\mu_{kj})^{1-x_j} \\\\\n",
+    "a_k(\\mathbf{x}) &= \\ln p(\\mathbf{x}|\\mathcal{C}_k)p(\\mathcal{C}_k) = \\sum_{j=1}^{p} \\left\\{ x_j \\ln\\mu_{kj} + (1-x_j)\\ln(1-\\mu_{kj}) \\right\\} + \\ln p(\\mathcal{C}_k)\n",
+    "\\end{align*}\n",
+    "\n",
+    "- $a_k(\\mathbf{x})$ is again linear functions of the input values $\\mathbf{x}$."
    ]
   },
   {
@@ -1610,7 +1872,7 @@
      },
      "0827eb16d5bd4f45a32f2be8505f0462": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "VBoxModel",
       "state": {
        "_dom_classes": [
@@ -1626,7 +1888,7 @@
      },
      "0bda37d3ed9c4f81b3557e5ebbb370ac": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "RadioButtonsModel",
       "state": {
        "_options_labels": [
@@ -1641,19 +1903,19 @@
      },
      "0f5f790ff0cb4f4eb9b9aafc51b72f33": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "128fdd0d83a64197a9d269c29bb7bf6a": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "137ee49ebce741b6a6035d31ea0ee6cb": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "VBoxModel",
       "state": {
        "_dom_classes": [
@@ -1669,13 +1931,13 @@
      },
      "14c79b9d3fd94cdebaf6abc0125c748e": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "17010aa11e5241139824309137bd45a4": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "VBoxModel",
       "state": {
        "_dom_classes": [
@@ -1690,13 +1952,13 @@
      },
      "17a9553850174fa0b79151089a1f4706": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "2256d9b068964bdb94efe3008f11e47f": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DescriptionStyleModel",
       "state": {
        "description_width": ""
@@ -1704,7 +1966,7 @@
      },
      "241a58cd26e44bacad2eb11a4e742a7e": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "VBoxModel",
       "state": {
        "_dom_classes": [
@@ -1739,7 +2001,7 @@
      },
      "24862b1bcd5645ffa475bac233800b55": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DescriptionStyleModel",
       "state": {
        "description_width": ""
@@ -1747,7 +2009,7 @@
      },
      "272ef4fa385b4ff49e943c630bf1a8ce": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DescriptionStyleModel",
       "state": {
        "description_width": "initial"
@@ -1755,19 +2017,19 @@
      },
      "283b4320ff8c49ec947366e181336af2": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "2eba03509f7d4d5e88da4727fcf80204": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "2f0c8a4c02614b09974be1dedc203236": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DescriptionStyleModel",
       "state": {
        "description_width": "initial"
@@ -1775,7 +2037,7 @@
      },
      "3301b40a277e4bcdb9faebf98496a34f": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {
        "height": "30px",
@@ -1784,25 +2046,25 @@
      },
      "372716ddd6a24bcdac49c7e9f5d133fc": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "39739275238947a3ad2811f7ce817a24": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "3ad7634ea51a46d78308615f57322e72": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "3b57245722804607beb23a835a5c2dac": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DescriptionStyleModel",
       "state": {
        "description_width": ""
@@ -1810,13 +2072,13 @@
      },
      "3c2688631fb84562b4e035ee8feecf6a": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "3cf391714a8b4184bb3de1f57dfa8655": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "IntTextModel",
       "state": {
        "description": "Index:",
@@ -1828,7 +2090,7 @@
      },
      "3de7e13fb3674da3918cb2595f47353f": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "RadioButtonsModel",
       "state": {
        "_options_labels": [
@@ -1843,7 +2105,7 @@
      },
      "3fb7e5be1fd348989f8eab8e2ae91b1c": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DescriptionStyleModel",
       "state": {
        "description_width": ""
@@ -1851,7 +2113,7 @@
      },
      "485097599a434341afc6e675c471e4dc": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DropdownModel",
       "state": {
        "_options_labels": [
@@ -1869,7 +2131,7 @@
      },
      "4afdc4114b2b4e25bd0ffc299f264e30": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DescriptionStyleModel",
       "state": {
        "description_width": "initial"
@@ -1877,7 +2139,7 @@
      },
      "4cf5dbde0da4414fbdc789001ad402c2": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "VBoxModel",
       "state": {
        "_dom_classes": [
@@ -1892,19 +2154,19 @@
      },
      "4d133d351e444a8392d54e0e3f6f5b20": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "58bda2dea56d4c698a916fc440081f28": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "59be5c9cc6194652a6a06945818ce42d": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "VBoxModel",
       "state": {
        "_dom_classes": [
@@ -1919,7 +2181,7 @@
      },
      "61727ba822ee4caa99f9404d75b8656e": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DropdownModel",
       "state": {
        "_options_labels": [
@@ -1957,7 +2219,7 @@
      },
      "6628ae39b48f438f940f5929f79e9f2c": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {
        "height": "30px",
@@ -1986,7 +2248,7 @@
      },
      "6651be2c98e14f4ca10fd84758df32d0": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {
        "height": "30px",
@@ -1995,7 +2257,7 @@
      },
      "6751a0c71f0b4a2ebccd3d045b89cfa8": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "VBoxModel",
       "state": {
        "_dom_classes": [
@@ -2010,7 +2272,7 @@
      },
      "676e253a87694f1987bcfd7db5790c02": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DescriptionStyleModel",
       "state": {
        "description_width": "initial"
@@ -2018,7 +2280,7 @@
      },
      "685ed2f5cf7746d8828f2ab178e70390": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {
        "height": "30px",
@@ -2027,7 +2289,7 @@
      },
      "694ec7b2b65f40628c52e249f903f29f": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {
        "height": "30px",
@@ -2036,7 +2298,7 @@
      },
      "6dd6f301b52e4ea68a6065058af9f8b6": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {
        "height": "30px",
@@ -2045,7 +2307,7 @@
      },
      "6e09d7b5cd574e0fa0b03247d6cf3eaa": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "VBoxModel",
       "state": {
        "_dom_classes": [
@@ -2060,13 +2322,13 @@
      },
      "727d28cd5e464bd0abe830dfcb21d67a": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "7bd781283a17434b8a5d0e248d142850": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DropdownModel",
       "state": {
        "_options_labels": [
@@ -2084,13 +2346,13 @@
      },
      "7c68de4693154e46aa79380239c3729a": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "7cc8e9288d30436fb5d1282b37ee497a": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "VBoxModel",
       "state": {
        "_dom_classes": [
@@ -2106,19 +2368,19 @@
      },
      "7eb8a439827b42da9d78a5330d413311": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "8549cee23a5943088bb3c0af8900f2fb": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "92c43cadf302459293ec47ccc087a18d": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DescriptionStyleModel",
       "state": {
        "description_width": "initial"
@@ -2126,7 +2388,7 @@
      },
      "92d51825631e43bfb0bccc549dcb71a1": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DescriptionStyleModel",
       "state": {
        "description_width": "initial"
@@ -2134,7 +2396,7 @@
      },
      "92dd9905a5d542498707b95e1a40ce6b": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DescriptionStyleModel",
       "state": {
        "description_width": "initial"
@@ -2142,7 +2404,7 @@
      },
      "954eb0d3f64b4815aba58147c7f08a1e": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {
        "height": "30px",
@@ -2151,7 +2413,7 @@
      },
      "974c6b789e4044f38ec8f12618ef78f1": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DropdownModel",
       "state": {
        "_options_labels": [
@@ -2169,25 +2431,25 @@
      },
      "9892372756454a63952e394ace0c9e77": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "99bf2925deeb4b969e9c82ceb28ec716": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "9c7dc3d78d854a8eae3eaadf77f11984": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "a3fbac2633da48d48e478413556d9015": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "RadioButtonsModel",
       "state": {
        "_options_labels": [
@@ -2202,19 +2464,19 @@
      },
      "aa80b82480da493e8388f74cec2411e0": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "b395c86d87594b4dae7dbcf1ee888783": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "b60b797f2bac4ee29ede12ba820c4716": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
@@ -2260,7 +2522,7 @@
      },
      "bad36c44719d419f83c835c6f373307c": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DescriptionStyleModel",
       "state": {
        "description_width": ""
@@ -2288,7 +2550,7 @@
      },
      "c2c0c3e04391477c801662d6526368b7": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "IntTextModel",
       "state": {
        "description": "Index:",
@@ -2300,7 +2562,7 @@
      },
      "c4e0d5a703b448a6b893aec858281fff": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DropdownModel",
       "state": {
        "_options_labels": [
@@ -2318,7 +2580,7 @@
      },
      "c79d0f053173432c913cfc08ba5397e3": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {
        "height": "30px",
@@ -2327,13 +2589,13 @@
      },
      "c807ffecfb4645be82fc342b156202d1": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "cebe583b636649e3a37a0747f8d0afda": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DropdownModel",
       "state": {
        "_options_labels": [
@@ -2371,7 +2633,7 @@
      },
      "d8b64b1060d5455d864dbcf8db8a6611": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "VBoxModel",
       "state": {
        "_dom_classes": [
@@ -2386,7 +2648,7 @@
      },
      "daf014586b404fe69ae87893242ca3b3": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DescriptionStyleModel",
       "state": {
        "description_width": "initial"
@@ -2394,13 +2656,13 @@
      },
      "db2d17263dc44efe8653a0a33a24e71f": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "dd329244bafa4644a38f7c1d87a6c565": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DescriptionStyleModel",
       "state": {
        "description_width": ""
@@ -2450,13 +2712,13 @@
      },
      "e2752df1babb4ab8b4f7e847f148ccf9": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "e4dc3bd2ebd843088faf13eadd0a6897": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
@@ -2482,7 +2744,7 @@
      },
      "ed3bf85fb2b647f9a4507f4859b000ec": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DropdownModel",
       "state": {
        "_options_labels": [
@@ -2500,7 +2762,7 @@
      },
      "ed68b78803094750b9edf2ee60be36f3": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "IntTextModel",
       "state": {
        "description": "Index:",
@@ -2512,7 +2774,7 @@
      },
      "f0bab0563ff643b0b0acd526466cea7e": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "VBoxModel",
       "state": {
        "_dom_classes": [
@@ -2527,13 +2789,13 @@
      },
      "f3785969abd94f6584214f38c7fadad4": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      },
      "f8ced76bb6c74e5690b8f790b3c17d91": {
       "model_module": "@jupyter-widgets/controls",
-      "model_module_version": "1.4.0",
+      "model_module_version": "1.5.0",
       "model_name": "DropdownModel",
       "state": {
        "_options_labels": [
@@ -2551,7 +2813,7 @@
      },
      "fa5014a930494bdda610e68b151047bc": {
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.1.0",
+      "model_module_version": "1.2.0",
       "model_name": "LayoutModel",
       "state": {}
      }
