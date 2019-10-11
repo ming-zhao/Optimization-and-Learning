@@ -1794,7 +1794,9 @@ y = \mathbf{W}^\intercal \mathbf{x}
 <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">is_train</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">is_train</span><span class="p">]</span>
 <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="o">~</span><span class="n">is_train</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">is_train</span><span class="p">]</span>
 <span class="n">N_test</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="n">is_train</span><span class="p">][</span><span class="n">features</span><span class="p">]</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">is_train</span><span class="p">][</span><span class="n">features</span><span class="p">]</span><span class="o">.</span><span class="n">corr</span><span class="p">())</span>
+
+<span class="n">toggle</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -2908,6 +2910,8 @@ RSS(f, \lambda) = \sum_{i=1}^{n} (y_i - f(x_i))^2 + \lambda \int (f^{\prime \pri
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Obesity&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">GRAY4</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">0.048</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.04</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">12.5</span><span class="p">,</span> <span class="mf">48.5</span><span class="p">,</span> <span class="s1">&#39;Systolic Blood Pressure&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">GRAY4</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="n">toggle</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
