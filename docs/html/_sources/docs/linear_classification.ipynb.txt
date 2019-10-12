@@ -196,7 +196,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "We introduce 3 training datasets that will be used in this notes."
+    "We introduce 3 training datasets that will be used in this note."
    ]
   },
   {
@@ -1515,7 +1515,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "As we remember from our linear algebra class, both eigenvectors and eigenvalues are providing us with information about the distortion of a linear transformation: The eigenvectors are basically the direction of this distortion, and the eigenvalues are the scaling factor for the eigenvectors that describing the magnitude of the distortion.\n",
+    "Recall from our linear algebra, both eigenvectors and eigenvalues are providing us with information about the distortion of a linear transformation: The eigenvectors are basically the direction of this distortion, and the eigenvalues are the scaling factor for the eigenvectors that describing the magnitude of the distortion.\n",
     "\n",
     "If we are performing the LDA for dimensionality reduction, the eigenvectors are important since they will form the new axes of our new feature subspace; the associated eigenvalues are of particular interest since they will tell us how \"informative\" the new \"axes\" are.\n",
     "\n",
@@ -1528,11 +1528,19 @@
    "metadata": {},
    "outputs": [
     {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "ok\n"
-     ]
+     "data": {
+      "text/html": [
+       "\n",
+       "        <a href=\"#\" onclick=\"code_toggle(this); return false;\">show code</a>\n",
+       "    "
+      ],
+      "text/plain": [
+       "<IPython.core.display.HTML object>"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
     }
    ],
    "source": [
@@ -1541,7 +1549,8 @@
     "    np.testing.assert_array_almost_equal(np.linalg.inv(S_W).dot(S_B).dot(eigv),\n",
     "                                         eig_vals[i] * eigv,\n",
     "                                         decimal=6, err_msg='', verbose=True)\n",
-    "print('ok')"
+    "# print('ok')\n",
+    "toggle()"
    ]
   },
   {
@@ -2065,9 +2074,7 @@
     "a_k = \\ln p(\\mathbf{x}|\\mathcal{C}_k)p(\\mathcal{C}_k)\n",
     "\\end{align*}\n",
     "\n",
-    "and softmax function represents a smoothed version of the \"max\" function. \n",
-    "\n",
-    "Note that generative approach gives the discriminant functions for LDA (or QDA) with assumption that the class-conditional densities are Gaussian. The discriminant functions can be utilized to evaluate the difference $\\ln p(\\mathcal{C}_k| \\mathbf{x}) - \\ln p(\\mathcal{C}_\\ell | \\mathbf{x})$ in order to assign an observation to a class. Here our generative models provide forms of the posterior probabilities."
+    "and softmax function represents a smoothed version of the \"max\" function."
    ]
   },
   {
@@ -2089,13 +2096,18 @@
     "p(\\mathbf{x}_i, \\mathcal{C}_2) &= p(\\mathcal{C}_2)p(\\mathbf{x}_i|\\mathcal{C}_2) = (1-\\pi) \\mathcal{N}(\\mathbf{x}_i|\\mathbf{\\mu}_2, \\Sigma) \\nonumber\n",
     "\\end{align}\n",
     "\n",
-    "We can find $\\pi$, $\\mathbf{\\mu}_1$, $\\mathbf{\\mu}_2$ and $\\Sigma$ by maximizing likelihood function\n",
+    "The parameters $\\pi$, $\\mathbf{\\mu}_1$, $\\mathbf{\\mu}_2$ and $\\Sigma$ can be obtained by maximizing the likelihood function\n",
     "\n",
     "\\begin{align}\n",
     "p(\\mathbf{t}|\\pi,\\mathbf{\\mu}_1,\\mathbf{\\mu}_2,\\Sigma) = \\prod_{i=1}^{n} \\left( \\pi \\mathcal{N}(\\mathbf{x}_i|\\mathbf{\\mu}_1, \\Sigma)\\right)^{t_i} \\left( (1-\\pi) \\mathcal{N}(\\mathbf{x}_i|\\mathbf{\\mu}_2, \\Sigma)\\right)^{1-t_i} \\nonumber\n",
-    "\\end{align}\n",
-    "\n",
-    "However, this approach is not robust to outliers because the maximum likelihood estimation of a Gaussian is not robust to outliers (see Student-t Distribution)."
+    "\\end{align}"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "LDA (or QDA) is generative model and its parameters are estimated by maximizing the likelihood function. However, this approach is not robust to outliers because the maximum likelihood estimation of a Gaussian is not robust to outliers (see Student-t Distribution)."
    ]
   },
   {
@@ -2172,14 +2184,16 @@
     "For data set $\\{\\phi_{i} \\equiv \\phi(\\mathbf{x}_i),t_i\\}, i=1,\\ldots,n$ with $t_i \\in \\{0,1\\}$, the likelihood function\n",
     "\n",
     "\\begin{align*}\n",
-    "p(\\mathbf{t}|\\mathbf{w}) = \\prod_{i=1}^{n} y_i^{t_i}(1-y_i)^{1-t_i} \\label{eqn:lr}\n",
+    "p(\\mathbf{t}|\\mathbf{w}, \\phi) = \\prod_{i=1}^{n} y_i^{t_i}(1-y_i)^{1-t_i} \\tag{Likelihood}\n",
     "\\end{align*}\n",
     "\n",
-    "where $\\mathbf{t} = (t_1,\\ldots,t_n)^\\intercal$ and $y_i=p(\\mathcal{C}_1|\\phi_i) = \\sigma(\\mathbf{w}^\\intercal \\phi)$. The error function is\n",
+    "where $\\mathbf{t} = (t_1,\\ldots,t_n)^\\intercal$ and $y_i=p(\\mathcal{C}_1|\\phi_i) = \\sigma(\\mathbf{w}^\\intercal \\phi)$. Since we model $p(\\mathcal{C}_k | \\mathbf{x})$ directly, our likelihood function is different from the one in generative model and does not depend on joint distribution.\n",
+    "\n",
+    "The error function is\n",
     "\n",
     "\\begin{align*}\n",
     "E(\\mathbf{w}) &= -\\ln p(\\mathbf{t}|\\mathbf{w}) = -\\sum_{i=1}^{n} \\left( t_i \\ln y_i + (1-t_i) \\ln (1-y_i) \\right) \\nonumber \\\\\n",
-    "\\nabla E(\\mathbf{w}) &= \\sum_{i=1}^{n} (y_i - t_i) \\phi_{i} \\label{eqn_lrerror}\n",
+    "\\nabla E(\\mathbf{w}) &= \\sum_{i=1}^{n} (y_i - t_i) \\phi_{i} \\tag{Error}\n",
     "\\end{align*}\n",
     "\n",
     "$\\mathbf{w}$ is estimated through **iterative reweighted least squares**:\n",
@@ -2190,13 +2204,21 @@
     "\n",
     "where $H$ is the Hessian matrix. \n",
     "\n",
-    "The approach requires fewer adaptive parameters comparing to generative approach."
+    "The approach requires fewer adaptive parameters comparing to generative approach. Note that\n",
+    "\n",
+    "- LDA (or QDA) is based on generative approach, and logistic regression is based on discriminative approach\n",
+    "\n",
+    "- LDA and logistic regression have exactly same form that the posterior probability $p(\\mathcal{C}_k | \\mathbf{x}) = \\sigma(\\mathbf{w}^\\intercal_k \\mathbf{\\phi})$\n",
+    "\n",
+    "- LDA and logistic regression are different in how linear coefficients $\\mathbf{w}_k$ are estimated, especially logistic regression does not assume Gaussian class-conditional density"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 23,
-   "metadata": {},
+   "metadata": {
+    "scrolled": true
+   },
    "outputs": [
     {
      "data": {
@@ -2295,6 +2317,22 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "The maximum likelihood estimate in logistic regression can exhibit severe over-fitting for data sets that are linearly separable. If the data set is linearly separable, any decision boundary separating the two classes have the property\n",
+    "\n",
+    "\\begin{align*}\n",
+    "\\mathbf{w}^\\intercal \\phi_i \\left\\{\\begin{aligned}\n",
+    "\\ge 0 & \\text{ if } t_i = 1 \\text{ or } \\mathbf{x} \\in \\mathcal{C}_1 \\\\\n",
+    "< 0 & \\text{ if } t_i = 0 \\text{ or } \\mathbf{x} \\in \\mathcal{C}_2\n",
+    "\\end{aligned}\\right.\n",
+    "\\end{align*}\n",
+    "\n",
+    "In equation (Error), minimizing the negative log-likelihood will push $y_i \\triangleq \\sigma(\\mathbf{w}^\\intercal \\phi_i) = t_i$ for all $i$. It is possible in separable case by simply having the magnitude of $\\mathbf{w}$ goes to infinity. Thus, $\\sigma(\\mathbf{w}^\\intercal \\phi)$ becomes a Heaviside function. Maximal likelihood could provide any solution that separating two classes which does not have good predictive capability."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
     "### Application: MNIST"
    ]
   },
@@ -2320,7 +2358,7 @@
     {
      "data": {
       "application/vnd.jupyter.widget-view+json": {
-       "model_id": "29bd9f7150ea47b0b23b1ca1a155775a",
+       "model_id": "3da0c798f5fa4d9b840c95cb70796ef5",
        "version_major": 2,
        "version_minor": 0
       },
@@ -2564,6 +2602,78 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "We have seen that the posterior class probabilities are given by $f(a)$ where\n",
+    "\n",
+    "- $f$ is a logistic (or softmax) transformation acting on $a$,\n",
+    "\n",
+    "- $a$ is a linear function of the feature variables.\n",
+    "\n",
+    "Is there other way to define $f(\\cdot)$ such that $f(a) =$ the posterior class probability $p(t=1|a)$? To answer the question, we want to model the posterior probability $p(t=1|a)$ directly instead of using Bayes' theorem."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let target value\n",
+    "\n",
+    "\\begin{align*}\n",
+    "t_i = \\left\\{ \\begin{aligned}\n",
+    "1 & \\text{ if } a_i=\\mathbf{w}^\\intercal \\mathbf{\\phi}_i \\ge \\theta \\\\\n",
+    "0 & \\text{ otherwise.}\n",
+    "\\end{aligned}\\right.\n",
+    "\\end{align*}\n",
+    "\n",
+    "If $\\theta$ has a probability density $p(\\theta)$ (assumed to be a standard Gaussian), then\n",
+    "\n",
+    "\\begin{align*}\n",
+    "p(t=1|a) = \\int_{-\\infty}^{a} p(\\theta) d\\theta = \\int_{-\\infty}^{a} \\mathcal{N}(\\theta|0,1) d\\theta = \\Phi(a) = \\frac{1}{2} \\left(1+\\frac{1}{\\sqrt{2}}\\text{erf}(a) \\right)\n",
+    "\\end{align*}\n",
+    "\n",
+    "The generalized linear model based on activation function\n",
+    "\n",
+    "\\begin{align*}\n",
+    "f(a) = \\frac{1}{2} \\left(1+\\frac{1}{\\sqrt{2}}\\text{erf}(a) \\right)\n",
+    "\\end{align*}\n",
+    "\n",
+    "is known as probit regression."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- The tails of the logistic sigmoid decay asymptotically like $\\exp(-x)$ for $x \\to \\infty$\n",
+    "\n",
+    "- The tails of the probit decay asymptotically like $\\exp(-x^2)$ for $x \\to \\infty$\n",
+    "\n",
+    "- The probit model is significantly more sensitive to outliers."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Mislabelling"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Both the logistic and the probit models assume the data is correctly labelled. The effect of mislabelling is easily incorporated into a probabilistic model by introducing a probability $\\epsilon$ that the target value $t$ has been flipped to the wrong value, so \n",
+    "\n",
+    "\\begin{align*}\n",
+    "p(t|\\mathbf{x}) = (1-\\epsilon) \\sigma(\\mathbf{x}) + \\epsilon (1-\\sigma(\\mathbf{x}))\n",
+    "\\end{align*}\n",
+    "\n",
+    "where $\\epsilon$ may be set in advance, or it may be treated as a hyperparameter whose value is inferred from the\tdata."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
     "## Bayesian Logistic Regression"
    ]
   },
@@ -2571,7 +2681,42 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "### Multiple Methods Comparisons"
+    "Exact Bayesian inference for logistic regression is intractable because the posterior distribution comprises a product of logistic sigmoid functions"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Posterior Distribution"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The posterior distribution over $\\mathbf{w}$ is\n",
+    "\n",
+    "\\begin{align*}\n",
+    "p(\\mathbf{w}|\\mathbf{t}) \\propto p(\\mathbf{t}|\\mathbf{w})p(\\mathbf{w})\n",
+    "\\end{align*}\n",
+    "\n",
+    "with a Gaussian prior $p(\\mathbf{w}) = \\mathcal{N}(\\mathbf{w}|\\mathbf{m}_0, \\mathbf{S}_0)$. From equation (Likelihood),\n",
+    "\n",
+    "\\begin{align}\n",
+    "\\ln p(\\mathbf{w}|\\mathbf{t}) & = -\\frac{1}{2} (\\mathbf{w}-\\mathbf{m}_0)^\\intercal \\mathbf{S}^{-1}_0 (\\mathbf{w}-\\mathbf{m}_0) \\nonumber \\\\\n",
+    "& \\quad + \\sum_{i=1}^{n} \\left( t_i \\ln y_i + (1-t_i) \\ln (1-y_i) \\right) + \\text{const} \\nonumber\n",
+    "\\end{align}\n",
+    "\n",
+    "- The posterior distribution $p(\\mathbf{w}|\\mathbf{t})$ is not Gaussian due to the second term.\n",
+    "\n",
+    "- We seek a Gaussian representation \n",
+    "\n",
+    "\\begin{align*}\n",
+    "p(\\mathbf{w}|\\mathbf{t}) = q(\\mathbf{w}) \\equiv \\mathcal{N}(\\mathbf{w}_{MAP}, \\mathbf{S}_N)\n",
+    "\\end{align*}\n",
+    "\n",
+    "for the posterior distribution by using Laplace approximation."
    ]
   },
   {
@@ -2581,8 +2726,85 @@
    "outputs": [
     {
      "data": {
+      "text/html": [
+       "\n",
+       "        <a href=\"#\" onclick=\"hide_comment(this); return false;\">show comment</a>\n",
+       "    "
+      ],
+      "text/plain": [
+       "<IPython.core.display.HTML object>"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "hide_comment()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Laplace Approximation** is to find a Gaussian approximation to a probability density $p(z)$\n",
+    "\n",
+    "\\begin{align*}\n",
+    "p(z) &= \\frac{1}{Z} f(z) \\text{ where } Z = \\int f(z) dz \\\\\n",
+    "p(z) & \\sim \\mathcal{N}(z|z_0, A^{-1}) \\text{ where $z_0$ is a mode of } p(z)\n",
+    "\\end{align*}\n",
+    "\n",
+    "$f^\\prime (z_0) = 0$ and $A = - \\nabla \\nabla \\ln f(z_0)$. Laplace framework is based purely on the aspects of the true distribution at mode of the variable, and so can fail to capture important global properties. In Bayesian logistic regression,\t\n",
+    "\\begin{align}\n",
+    "\\mathbf{S}_N &= -\\nabla \\nabla \\ln p(\\mathbf{w}|\\mathbf{t}) = \\mathbf{S}^{-1}_0 \\sum_{i=1}^{n} y_i(1-y_i) \\phi_i \\phi_{i}^\\intercal \\nonumber\n",
+    "\\end{align}\n",
+    "\n",
+    "<span style=\"float:right\"> $\\blacksquare$ </span>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Predictive Distribution"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The predictive distribution\n",
+    "\n",
+    "\\begin{align}\n",
+    "p(\\mathcal{C}_1|\\phi,\\mathbf{t}) &= \\int p(\\mathcal{C}_1|\\phi,\\mathbf{w}) p(\\mathbf{w}|\\mathbf{t})dw \\approxeq \\int \\sigma(\\mathbf{w}^\\intercal \\phi) q(\\mathbf{w}) dw \\nonumber \\\\\n",
+    "&= \\int \\sigma(a) \\left(\\int \\delta(a-\\mathbf{w}^\\intercal \\phi) q(\\mathbf{w})\\right) da \\equiv \\int \\sigma(a) p(a) da\\nonumber \\\\\n",
+    "& \\approxeq \\int \\sigma(a) \\mathcal{N}(a|\\mu_a, \\sigma^2_a) da \\quad \\quad \\text{Apply Laplace approximation}\\nonumber\n",
+    "\\end{align}\n",
+    "\n",
+    "where $\\delta$ is Dirac function, $a = \\mathbf{w}^\\intercal \\phi$, and\n",
+    "\n",
+    "\\begin{align}\n",
+    "\\mu_a &= E(a) = \\int p(a) a da = \\int q(\\mathbf{w}) \\mathbf{w}^\\intercal \\phi dw = \\mathbf{w}^T_{MAP} \\phi \\nonumber \\\\\n",
+    "\\sigma^2_a &= \\text{var}(a) = \\int p(a) (a^2 - \\mu_a^2) da = \\phi^\\intercal \\mathbf{S}_N \\phi \\nonumber\n",
+    "\\end{align}\n",
+    "\n",
+    "- The predictive distribution is the convolution of a Gaussian with a logistic sigmoid, and cannot be evaluated analytically,\n",
+    "\n",
+    "- We can use probit function $\\Phi$, then the convolution can be expressed analytically."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "metadata": {
+    "scrolled": false
+   },
+   "outputs": [
+    {
+     "data": {
       "application/vnd.jupyter.widget-view+json": {
-       "model_id": "6c4b105d8e49424b824268275993fda1",
+       "model_id": "e36f3b3f8b9f45ff89157ec8227159f7",
        "version_major": 2,
        "version_minor": 0
       },
@@ -2604,7 +2826,7 @@
        "<IPython.core.display.HTML object>"
       ]
      },
-     "execution_count": 30,
+     "execution_count": 31,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -2644,6 +2866,87 @@
     "    plt.show()\n",
     "    \n",
     "toggle()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Information Criterion"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- Akaike information criterion (AIC): \n",
+    "\n",
+    "$\\ln p(\\mathcal{D}|\\mathbf{w}_{\\text{ML}}) - M$, where $p(\\mathcal{D}|\\mathbf{w}_{\\text{ML}})$ is the best-fit log likelihood and $M$ is number of parameters in $\\theta$.\n",
+    "\n",
+    "- Bayesian Information Criterion (BIC):  \n",
+    "\n",
+    "$\\ln p(\\mathcal{D}|\\mathbf{w}_{\\text{MAP}}) - \\frac{1}{2} M \\ln n$, where $n$ is the number of data points."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "\n",
+       "        <a href=\"#\" onclick=\"hide_comment(this); return false;\">show comment</a>\n",
+       "    "
+      ],
+      "text/plain": [
+       "<IPython.core.display.HTML object>"
+      ]
+     },
+     "execution_count": 32,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "hide_comment()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**The intuition of Bayesian Information Criterion**\n",
+    "\n",
+    "Laplace approximate gives\n",
+    "\n",
+    "\\begin{align}\n",
+    "Z &= \\int f(\\mathbf{z}) d\\mathbf{z} \\approx f(\\mathbf{z}_0) \\int \\exp \\left\\{ -\\frac{1}{2} (\\mathbf{z}-\\mathbf{z}_0)^\\intercal \\mathbf{A} (\\mathbf{z} - \\mathbf{z}_0)\\right\\} d\\mathbf{z} = f(\\mathbf{z}_0) \\frac{(2\\pi)^{M/2}}{|\\mathbf{A}|^{1/2}} \\label{eqn_bic}\n",
+    "\\end{align}\n",
+    "\n",
+    "where\n",
+    "\n",
+    "\\begin{align*}\n",
+    "\\mathbf{A} = - \\nabla \\nabla \\ln f(\\mathbf{z})|_{\\mathbf{z} = \\mathbf{z}_0}\n",
+    "\\end{align*}\n",
+    "\n",
+    "From Bayes' theorem, the model evidence is\n",
+    "\n",
+    "\\begin{align*}\n",
+    "p(\\mathcal{D}) & = \\int p(\\mathcal{D}|\\theta) p(\\theta) d\\theta\n",
+    "\\end{align*}\n",
+    "\n",
+    "identifying $Z = p(\\mathcal{D})$ and $f(\\theta) = p(\\mathcal{D}|\\theta) p(\\theta)$), \\eqref{eqn_bic} gives\n",
+    "\n",
+    "\\begin{align*}\n",
+    "\\ln p(\\mathcal{D}) &\\approx \\ln p(\\mathcal{D}|\\mathbf{w}_{\\text{MAP}}) + \\underbrace{\\ln p(\\mathbf{w}_{\\text{ML}}) + \\frac{M}{2} \\ln (2\\pi) - \\frac{1}{2} \\ln |A|}_{\\text{Occam factor}} \\nonumber \\\\\n",
+    "&\\approx \\ln p(\\mathcal{D}|\\mathbf{w}_{\\text{MAP}}) - \\frac{1}{2} M \\ln n\n",
+    "\\end{align*}\n",
+    "\n",
+    "\"Occam factor\" penalizes model complexity.\n",
+    "\n",
+    "<span style=\"float:right\"> $\\blacksquare$ </span>"
    ]
   }
  ],
